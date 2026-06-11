@@ -9,16 +9,14 @@
 
 <style>
 :root {
-    --primary: #4F6DC2;
-    --secondary: #758FD7;
-    --success: #97DC8F;
-    --danger: #D77578;
+    --primary-color: #4F6DC2;
+    --secondary-color: #758FD7;
+    --success-color: #97DC8F;
+    --danger-color: #D77578;
+    --progress-bg: #FBFBFE;
     --card-bg: #F0F2F9;
     --all-bg: #FBFBFE;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
-    --text: #1a1a2e;
-    --text-muted: #8a9bb5;
-    --sidebar-w: 220px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -29,13 +27,11 @@ html {
 }
 
 body {
-    background: var(--all-bg);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif;
+    background-color: var(--all-bg);
+    font-family: 'Arial', 'Helvetica', sans-serif;
     margin: 0;
-    color: var(--text);
+    color: #333;
     line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Layout ── */
@@ -49,34 +45,32 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: var(--sidebar-w);
+    width: 220px;
     height: 100vh;
-    padding: 120px 28px 40px;
+    padding: 100px 24px 40px;
     display: flex;
     flex-direction: column;
     z-index: 50;
-    background: var(--all-bg);
-    border-right: 1px solid rgba(0,0,0,0.04);
+    background-color: var(--all-bg);
+    border-right: 1px solid rgba(0,0,0,0.05);
 }
 
 .sidebar nav {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .sidebar a {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     text-decoration: none;
-    color: var(--text-muted);
+    color: #888;
     font-size: 0.9rem;
-    font-weight: 500;
     padding: 10px 16px;
-    border-radius: 12px;
-    transition: all 0.25s ease;
-    letter-spacing: -0.01em;
+    border-radius: 100px;
+    transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .sidebar a .num {
@@ -85,32 +79,28 @@ body {
     justify-content: center;
     width: 24px;
     height: 24px;
-    border-radius: 8px;
-    background: transparent;
+    border-radius: 50%;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--text-muted);
-    transition: all 0.25s ease;
+    background-color: var(--card-bg);
+    color: var(--primary-color);
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar a:hover {
-    color: var(--text);
-    background: var(--card-bg);
-}
-
-.sidebar a:hover .num {
-    color: var(--primary);
+    color: #333;
+    background-color: var(--card-bg);
 }
 
 .sidebar a.active {
-    color: var(--primary);
-    background: var(--card-bg);
+    color: var(--primary-color);
     font-weight: 600;
+    background-color: var(--card-bg);
 }
 
 .sidebar a.active .num {
+    background-color: var(--primary-color);
     color: #fff;
-    background: var(--primary);
 }
 
 /* ── Mobile Header ── */
@@ -119,9 +109,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(251, 251, 254, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: var(--all-bg);
     padding: 12px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
 }
@@ -139,33 +127,31 @@ body {
 .mobile-header a {
     flex-shrink: 0;
     text-decoration: none;
-    color: var(--text-muted);
-    font-size: 0.82rem;
-    font-weight: 600;
+    color: #888;
+    font-size: 0.85rem;
     padding: 8px 18px;
     border-radius: 100px;
-    background: var(--card-bg);
-    transition: all 0.2s ease;
+    background-color: var(--card-bg);
     white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .mobile-header a:hover,
 .mobile-header a.active {
     color: #fff;
-    background: var(--primary);
+    background-color: var(--primary-color);
 }
 
 /* ── Main Content ── */
 .main-content {
     flex: 1;
-    margin-left: var(--sidebar-w);
+    margin-left: 220px;
 }
 
 .section {
     scroll-margin-top: 80px;
 }
 
-/* ── Constrained content blocks ── */
 .constrained {
     max-width: 640px;
     margin-left: auto;
@@ -176,34 +162,34 @@ body {
 
 /* ── Hero ── */
 .hero {
-    padding: 100px 0 60px;
+    padding: 120px 0 80px;
 }
 
 .hero .overline {
     display: inline-block;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--primary);
+    letter-spacing: 0.1em;
+    color: var(--primary-color);
     margin-bottom: 24px;
 }
 
 .hero h1 {
-    font-size: 3rem;
+    font-size: 2.6rem;
     font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.03em;
+    color: #222;
+    letter-spacing: -0.02em;
     line-height: 1.15;
-    margin: 0 0 28px;
+    margin: 0 0 24px;
 }
 
 .hero p {
-    font-size: 1.2rem;
-    color: var(--text-muted);
+    font-size: 1.15rem;
+    color: #777;
     line-height: 1.7;
     margin: 0;
-    max-width: 500px;
+    max-width: 480px;
 }
 
 /* ─── How It Works ─── */
@@ -213,67 +199,60 @@ body {
 
 .section-label {
     display: inline-block;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--primary);
-    margin-bottom: 32px;
+    letter-spacing: 0.1em;
+    color: var(--primary-color);
+    margin-bottom: 28px;
 }
 
 .steps {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .step {
     display: flex;
     align-items: flex-start;
-    gap: 20px;
-    padding: 24px 28px;
-    background: var(--card-bg);
+    gap: 16px;
+    padding: 20px 24px;
+    background-color: var(--card-bg);
     border-radius: 16px;
     box-shadow: var(--shadow);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.step:hover {
-    transform: translateX(6px);
-    box-shadow: 0 8px 20px rgba(79, 109, 194, 0.12);
 }
 
 .step-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    background: var(--primary);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
     color: #fff;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 3px;
 }
 
 .step-text {
     flex: 1;
-    font-size: 1rem;
-    color: var(--text);
-    line-height: 1.7;
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.6;
 }
 
 .step-text strong {
-    color: var(--primary);
-    font-weight: 700;
+    color: var(--primary-color);
 }
 
 /* ─── Report Section ─── */
 .report-section {
-    padding: 100px 0 0;
-    background: var(--all-bg);
+    padding: 80px 0 0;
+    background-color: var(--all-bg);
 }
 
 .report-section .section-label {
@@ -286,18 +265,7 @@ body {
 }
 
 .report-demo {
-    margin-top: 32px;
-}
-
-/* ─── Report Demo Styles (scoped) ─── */
-.report-demo {
-    --primary-color: #4F6DC2;
-    --secondary-color: #758FD7;
-    --success-color: #97DC8F;
-    --danger-color: #D77578;
-    --progress-bg: #FBFBFE;
-    --card-bg: #F0F2F9;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 28px;
 }
 
 .report-demo .container-md {
@@ -372,21 +340,16 @@ body {
 .report-demo .btn-filter {
     border: none;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 100px;
     color: white;
     background-color: var(--secondary-color);
+    transition: background-color 0.2s ease;
 }
 
 .report-demo .btn-filter:hover {
     background-color: var(--primary-color);
-    transform: scale(1.05);
-}
-
-.report-demo .btn-filter:active {
-    transform: scale(0.95);
 }
 
 .report-demo .endpoint {
@@ -407,8 +370,8 @@ body {
     padding: 6px 12px;
     border-radius: 10px;
     color: white;
-    font-size: 0.9rem;
     font-weight: 600;
+    font-size: 0.85rem;
 }
 
 .report-demo .endpoint .method {
@@ -422,7 +385,6 @@ body {
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    font-size: 0.95rem;
 }
 
 .report-demo .endpoint .path::-webkit-scrollbar {
@@ -437,12 +399,6 @@ body {
     background-color: var(--success-color);
 }
 
-/* ── Scroll Spy ── */
-.sidebar a,
-.mobile-header a {
-    transition: all 0.25s ease;
-}
-
 /* ── Responsive ── */
 @media (max-width: 960px) {
     .sidebar { display: none; }
@@ -453,11 +409,11 @@ body {
         padding-left: 24px;
         padding-right: 24px;
     }
-    .hero { padding: 60px 0 40px; }
-    .hero h1 { font-size: 2.2rem; }
-    .hero p { font-size: 1.05rem; }
+    .hero { padding: 60px 0 48px; }
+    .hero h1 { font-size: 2rem; }
+    .hero p { font-size: 1rem; }
     .how-section { padding: 48px 0; }
-    .report-section { padding: 60px 0 0; }
+    .report-section { padding: 48px 0 0; }
     .report-section .section-label {
         padding-left: 24px;
         padding-right: 24px;
@@ -471,12 +427,12 @@ body {
 
 @media (max-width: 576px) {
     .hero { padding: 40px 0 32px; }
-    .hero h1 { font-size: 1.7rem; }
-    .hero p { font-size: 0.95rem; }
+    .hero h1 { font-size: 1.6rem; }
+    .hero p { font-size: 0.9rem; }
     .constrained { padding-left: 16px; padding-right: 16px; }
     .how-section { padding: 32px 0; }
-    .report-section { padding: 40px 0 0; }
-    .step { padding: 18px 20px; }
+    .report-section { padding: 32px 0 0; }
+    .step { padding: 16px 18px; }
     .report-demo .container-md {
         padding-left: 8px;
         padding-right: 8px;
@@ -527,9 +483,9 @@ body {
         <!-- ─── Hero ─── -->
         <section id="about" class="section hero constrained">
             <span class="overline">API Coverage By Swagger</span>
-            <h1>Понимайте, какие эндпоинты<br>уже под покрытием</h1>
+            <h1>Понимайте на какие эндпоинты при тестировании вы уже обратили внимание</h1>
             <p>
-                Инструмент показывает, на какие эндпоинты при тестировании вы уже обратили внимание, а какие остались без покрытия.
+                Инструмент показывает покрытие ваших тестов относительно OpenAPI/Swagger спецификации.
             </p>
         </section>
 
@@ -540,19 +496,19 @@ body {
                 <div class="step">
                     <span class="step-num">1</span>
                     <div class="step-text">
-                        Укажите <strong>базовый URL</strong> сервиса и ссылку на <strong>OpenAPI / Swagger JSON-схему</strong>.
+                        Указываете <strong>базовый URL</strong> сервиса и ссылку на <strong>JSON-схему</strong> (Swagger/OpenAPI).
                     </div>
                 </div>
                 <div class="step">
                     <span class="step-num">2</span>
                     <div class="step-text">
-                        Запустите ваши тесты, указав в качестве <strong>base URL</strong> адрес этого сервиса.
+                        Запускаете тесты, в качестве <strong>base URL</strong> указав адрес этого сервиса.
                     </div>
                 </div>
                 <div class="step">
                     <span class="step-num">3</span>
                     <div class="step-text">
-                        Обновите страницу — инструмент покажет, какие эндпоинты <strong>покрыты</strong> тестами, а какие ещё <strong>нет</strong>.
+                        Обновляете страницу — видите какие эндпоинты уже <strong>покрыты</strong>, а какие <strong>нет</strong>.
                     </div>
                 </div>
             </div>
