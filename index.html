@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Coverage By Swagger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
@@ -16,7 +18,7 @@
     --card-bg: #F0F2F9;
     --all-bg: #FBFBFE;
     --progress-bg: #FBFBFE;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 16px rgba(0,0,0,0.06);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -28,11 +30,12 @@ html {
 
 body {
     background-color: var(--all-bg);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
     margin: 0;
-    color: #333;
+    color: #1a1a2e;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Layout ── */
@@ -162,25 +165,60 @@ body {
 /* ── Hero (full width inside main) ── */
 .hero {
     background-color: var(--primary-color);
-    padding: 100px 60px 90px;
+    padding: 100px 60px 160px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(117,143,215,0.2) 0%, transparent 65%);
+    top: -100px;
+    right: -80px;
+    pointer-events: none;
+}
+
+.hero-dotpattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 20px 20px, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+}
+
+.hero-wave {
+    position: absolute;
+    bottom: -2px;
+    left: -5%;
+    width: 110%;
+    height: 60px;
+    background-color: var(--all-bg);
+    border-radius: 50% 50% 0 0;
+    pointer-events: none;
 }
 
 .hero-inner {
     max-width: 640px;
+    position: relative;
+    z-index: 1;
 }
 
 .hero h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
+    font-size: 2.4rem;
+    font-weight: 900;
     color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
-    margin: 0 0 24px;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin: 0 0 20px;
 }
 
 .hero p {
     font-size: 1.1rem;
-    color: rgba(255,255,255,0.75);
+    color: rgba(255,255,255,0.7);
     line-height: 1.7;
     margin: 0;
 }
@@ -192,19 +230,19 @@ body {
     color: #fff;
     font-weight: 700;
     text-decoration: none;
-    padding: 2px 14px 2px 12px;
+    padding: 3px 16px 3px 14px;
     border-radius: 100px;
-    background-color: rgba(255,255,255,0.15);
-    transition: background-color 0.2s;
+    background-color: rgba(255,255,255,0.14);
+    transition: background-color 0.2s, transform 0.2s;
     white-space: nowrap;
 }
 
 .hero-link:hover {
-    background-color: rgba(255,255,255,0.25);
+    background-color: rgba(255,255,255,0.24);
 }
 
 .hero-link i {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 /* ── Constrained content sections ── */
@@ -222,13 +260,23 @@ body {
 }
 
 .section-label {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--primary-color);
     margin-bottom: 32px;
+}
+
+.section-label::before {
+    content: '';
+    width: 20px;
+    height: 2px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
 }
 
 .steps {
@@ -242,8 +290,16 @@ body {
     align-items: flex-start;
     gap: 18px;
     padding: 24px 28px;
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.step:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
 }
 
 
@@ -252,13 +308,13 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
     background-color: var(--primary-color);
     color: #fff;
-    font-size: 0.8rem;
-    font-weight: 700;
+    font-size: 0.82rem;
+    font-weight: 800;
     flex-shrink: 0;
     margin-top: 2px;
 }
@@ -436,11 +492,12 @@ body {
     border-radius: 100px;
     background-color: var(--card-bg);
     font-size: 0.9rem;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 .gh-link:hover {
     background-color: #e0e4f0;
+    transform: translateX(2px);
 }
 
 .gh-link i {
@@ -549,6 +606,19 @@ body {
     margin-top: 120px;
     height: 120px;
     background-color: var(--secondary-color);
+    position: relative;
+}
+
+.site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background-color: rgba(255,255,255,0.25);
+    border-radius: 3px;
 }
 
 @media (max-width: 960px) {
@@ -570,7 +640,7 @@ body {
     .sidebar { display: none; }
     .mobile-header { display: block; }
     .main-content { margin-left: 0; }
-    .hero { padding: 60px 32px 56px; }
+    .hero { padding: 60px 32px 80px; }
     .hero h1 { font-size: 1.8rem; }
     .hero p { font-size: 1rem; }
     .constrained {
@@ -592,9 +662,10 @@ body {
 }
 
 @media (max-width: 576px) {
-    .hero { padding: 48px 24px 44px; }
+    .hero { padding: 48px 24px 60px; }
     .hero h1 { font-size: 1.5rem; }
     .hero p { font-size: 0.9rem; }
+    .hero-wave { height: 35px; }
     .constrained { padding-left: 24px; padding-right: 24px; }
     .how-section { padding: 48px 0 40px; }
     .report-section { padding: 40px 0 0; }
@@ -655,6 +726,8 @@ body {
 
         <!-- ─── Hero ─── -->
         <section id="about" class="section hero">
+            <div class="hero-dotpattern"></div>
+            <div class="hero-wave"></div>
             <div class="hero-inner">
                 <h1>Понимайте на какие эндпоинты при тестировании вы уже обратили внимание, а на какие нет.</h1>
                 <p>
