@@ -9,9 +9,16 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     background-color: var(--all-bg);
-    font-family: 'Arial', sans-serif;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    margin: 0;
 }
 
 .container-md {
@@ -24,7 +31,6 @@ body {
     box-shadow: var(--shadow);
 }
 
-/* Переопределение Bootstrap */
 .text-primary {
     color: var(--primary-color) !important;
 }
@@ -55,7 +61,9 @@ body {
     background-color: var(--secondary-color) !important;
 }
 
-.btn-primary:hover, .btn-secondary:hover, .btn-danger:hover {
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-danger:hover {
     opacity: 0.9;
 }
 
@@ -81,5 +89,3 @@ body {
     from { bottom: 0; opacity: 0; }
     to { bottom: 20px; opacity: 1; }
 }
-
-

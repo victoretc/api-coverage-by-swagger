@@ -3,79 +3,74 @@ function filterEndpoints(tag) {
     const noResultsMessage = document.getElementById('no-results-message');
     let hasVisibleResults = false;
 
-    tagGroups.forEach(group => {
+    tagGroups.forEach(function (group) {
         const groupEndpoints = group.querySelectorAll('.endpoint');
         let groupHasVisibleEndpoints = false;
 
-        groupEndpoints.forEach(endpoint => {
+        groupEndpoints.forEach(function (endpoint) {
             const isCovered = endpoint.getAttribute('data-covered') === 'true';
             const endpointTag = endpoint.getAttribute('data-tag');
+            let visible = false;
 
             if (tag === 'all') {
-                endpoint.style.display = 'grid';
-                groupHasVisibleEndpoints = true;
+                visible = true;
             } else if (tag === 'covered') {
-                if (isCovered) {
-                    endpoint.style.display = 'grid';
-                    groupHasVisibleEndpoints = true;
-                } else {
-                    endpoint.style.display = 'none';
-                }
+                visible = isCovered;
             } else {
-                if (endpointTag === tag) {
-                    endpoint.style.display = 'grid';
-                    groupHasVisibleEndpoints = true;
-                } else {
-                    endpoint.style.display = 'none';
-                }
+                visible = endpointTag === tag;
+            }
+
+            endpoint.style.display = visible ? 'grid' : 'none';
+
+            if (visible) {
+                groupHasVisibleEndpoints = true;
             }
         });
 
+        group.style.display = groupHasVisibleEndpoints ? 'block' : 'none';
+
         if (groupHasVisibleEndpoints) {
-            group.style.display = 'block';
             hasVisibleResults = true;
-        } else {
-            group.style.display = 'none';
         }
     });
 
-    if (hasVisibleResults) {
-        noResultsMessage.style.display = 'none';
-    } else {
-        noResultsMessage.style.display = 'block';
-    }
+    noResultsMessage.style.display = hasVisibleResults ? 'none' : 'block';
+}
+
+function showNotification(message) {
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+
+    notificationMessage.textContent = message;
+    notification.style.display = 'block';
+
+    setTimeout(function () {
+        notification.style.display = 'none';
+    }, 2000);
 }
 
 function clearCoverage() {
     fetch('/clear_coverage', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+        },
     })
-    .then(response => response.json())
-    .then(data => {
-        showNotification(data.message);
-        setTimeout(() => {
-            location.reload();
-        }, 1000);
-    })
-    .catch(error => {
-        console.error('Ошибка:', error);
-        showNotification('Произошла ошибка при очистке покрытия.');
-    });
-}
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            showNotification(data.message);
 
-function showNotification(message) {
-    const notification = document.getElementById('notification');
-    const notificationMessage = document.getElementById('notification-message');
-    notificationMessage.textContent = message;
-    notification.style.display = 'block';
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 2000);
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        })
+        .catch(function (error) {
+            console.error('Ошибка:', error);
+            showNotification('Произошла ошибка при очистке покрытия.');
+        });
 }
-
 
 async function refreshCoverage() {
     try {
@@ -83,12 +78,14 @@ async function refreshCoverage() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         });
 
         if (response.ok) {
             showNotification('Спецификация успешно обновлена');
-            setTimeout(() => location.reload(), 1500);
+            setTimeout(function () {
+                location.reload();
+            }, 1500);
         } else {
             const error = await response.json();
             showNotification(error.detail || 'Ошибка при обновлении');

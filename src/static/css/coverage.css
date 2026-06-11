@@ -76,7 +76,8 @@
     box-shadow: var(--shadow);
 }
 
-.endpoint .method, .endpoint .status {
+.endpoint .method,
+.endpoint .status {
     text-align: center;
     padding: 6px;
     border-radius: 10px;

@@ -1,8 +1,9 @@
-
-document.getElementById('urlForm').addEventListener('submit', function(event) {
+document.getElementById('urlForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
     const loader = document.getElementById('loader');
+    const notification = document.getElementById('notification');
+
     loader.style.display = 'block';
 
     const baseUrl = document.getElementById('base_url').value;
@@ -15,33 +16,32 @@ document.getElementById('urlForm').addEventListener('submit', function(event) {
         },
         body: JSON.stringify({ base_url: baseUrl, swagger_url: swaggerUrl }),
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Ошибка при сохранении данных');
-        }
-        return response.json();
-    })
-    .then(data => {
-        loader.style.display = 'none';
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Ошибка при сохранении данных');
+            }
 
-        const notification = document.getElementById('notification');
-        notification.textContent = data.message;
-        notification.style.display = 'block';
+            return response.json();
+        })
+        .then(function (data) {
+            loader.style.display = 'none';
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 1500);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        loader.style.display = 'none';
+            notification.textContent = data.message;
+            notification.style.display = 'block';
 
-        const notification = document.getElementById('notification');
-        notification.textContent = 'Ошибка при сохранении данных';
-        notification.style.display = 'block';
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+            loader.style.display = 'none';
 
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 3000);
-    });
+            notification.textContent = 'Ошибка при сохранении данных';
+            notification.style.display = 'block';
+
+            setTimeout(function () {
+                notification.style.display = 'none';
+            }, 3000);
+        });
 });
