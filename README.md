@@ -48,9 +48,3 @@ requests.post(f"{BASE}/refresh_spec")
 ```
 
 ---
-
-<p align="center">
-  <a href="http://127.0.0.1:8000/docs">Документация API</a>
-  ·
-  <a href="https://github.com/victoretc/api-coverage-by-swagger/actions">GitHub Actions</a>
-</p> 
