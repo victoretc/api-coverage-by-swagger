@@ -1,0 +1,94 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - navigation [ref=e4]:
+      - link "1 О проекте" [ref=e5] [cursor=pointer]:
+        - /url: "#about"
+        - generic [ref=e6]: "1"
+        - text: О проекте
+      - link "2 Как работает" [ref=e7] [cursor=pointer]:
+        - /url: "#how"
+        - generic [ref=e8]: "2"
+        - text: Как работает
+      - link "3 Пример отчёта" [ref=e9] [cursor=pointer]:
+        - /url: "#report"
+        - generic [ref=e10]: "3"
+        - text: Пример отчёта
+  - generic [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]: API Coverage By Swagger
+      - heading "Понимайте на какие эндпоинты при тестировании вы уже обратили внимание" [level=1] [ref=e15]
+      - paragraph [ref=e16]: Инструмент показывает покрытие ваших тестов относительно OpenAPI/Swagger спецификации.
+    - generic [ref=e17]:
+      - generic [ref=e18]: Как работает
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]: "1"
+          - generic [ref=e22]:
+            - text: Указываете
+            - strong [ref=e23]: базовый URL
+            - text: сервиса и ссылку на
+            - strong [ref=e24]: JSON-схему
+            - text: (Swagger/OpenAPI).
+        - generic [ref=e25]:
+          - generic [ref=e26]: "2"
+          - generic [ref=e27]:
+            - text: Запускаете тесты, в качестве
+            - strong [ref=e28]: base URL
+            - text: указав адрес этого сервиса.
+        - generic [ref=e29]:
+          - generic [ref=e30]: "3"
+          - generic [ref=e31]:
+            - text: Обновляете страницу — видите какие эндпоинты уже
+            - strong [ref=e32]: покрыты
+            - text: ", а какие"
+            - strong [ref=e33]: нет
+            - text: .
+    - generic [ref=e34]:
+      - generic [ref=e35]: Пример отчёта
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - generic [ref=e43]:
+              - generic [ref=e44]: "7"
+              - generic [ref=e45]: эндпоинтов
+            - generic [ref=e47]:
+              - generic [ref=e48]: "1"
+              - generic [ref=e49]: покрыто
+            - generic [ref=e51]:
+              - generic [ref=e52]: "14.29"
+              - generic [ref=e53]: процент покрытия
+          - progressbar [ref=e57]
+        - generic [ref=e58]:
+          - button "Все эндпоинты" [ref=e59] [cursor=pointer]
+          - button "Покрытые" [ref=e60] [cursor=pointer]
+        - button "todos" [ref=e62] [cursor=pointer]
+        - generic [ref=e64]:
+          - generic [ref=e66]: todos
+          - generic [ref=e67]:
+            - generic [ref=e68]: GET
+            - generic [ref=e69]: /todos/
+            - generic [ref=e70]: покрыт
+          - generic [ref=e71]:
+            - generic [ref=e72]: POST
+            - generic [ref=e73]: /todos/
+            - generic [ref=e74]: не покрыт
+          - generic [ref=e75]:
+            - generic [ref=e76]: DELETE
+            - generic [ref=e77]: /todos/
+            - generic [ref=e78]: не покрыт
+          - generic [ref=e79]:
+            - generic [ref=e80]: GET
+            - generic [ref=e81]: "/todos/{todo_id}"
+            - generic [ref=e82]: не покрыт
+          - generic [ref=e83]:
+            - generic [ref=e84]: PUT
+            - generic [ref=e85]: "/todos/{todo_id}"
+            - generic [ref=e86]: не покрыт
+          - generic [ref=e87]:
+            - generic [ref=e88]: DELETE
+            - generic [ref=e89]: "/todos/{todo_id}"
+            - generic [ref=e90]: не покрыт
+          - generic [ref=e91]:
+            - generic [ref=e92]: PATCH
+            - generic [ref=e93]: "/todos/{todo_id}/complete"
+            - generic [ref=e94]: не покрыт

@@ -1,0 +1,116 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - navigation [ref=e4]:
+      - link "1 О проекте" [ref=e5] [cursor=pointer]:
+        - /url: "#about"
+        - generic [ref=e6]: "1"
+        - text: О проекте
+      - link "2 Как работает" [ref=e7] [cursor=pointer]:
+        - /url: "#how"
+        - generic [ref=e8]: "2"
+        - text: Как работает
+      - link "3 Пример отчёта" [ref=e9] [cursor=pointer]:
+        - /url: "#report"
+        - generic [ref=e10]: "3"
+        - text: Пример отчёта
+  - generic [ref=e11]:
+    - generic [ref=e13]:
+      - heading "Понимайте на какие эндпоинты при тестировании вы уже обратили внимание, а на какие нет." [level=1] [ref=e14]
+      - paragraph [ref=e15]:
+        - link "Инструмент " [ref=e16] [cursor=pointer]:
+          - /url: https://github.com/victoretc/api-coverage-by-swagger
+          - text: Инструмент
+          - generic [ref=e17]: 
+        - text: показывает покрытие ваших ручных / автоматических тестов относительно OpenAPI/Swagger спецификации.
+    - generic [ref=e18]:
+      - generic [ref=e19]: Как работает
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: "1"
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - text: Указываете
+              - strong [ref=e25]: базовый URL
+              - text: сервиса и ссылку на
+              - strong [ref=e26]: JSON-схему
+              - text: (Swagger/OpenAPI).
+            - generic [ref=e27]:
+              - generic [ref=e28]:
+                - generic [ref=e29]: Base URL
+                - textbox "Base URL" [ref=e30]: http://127.0.0.1:8080
+              - generic [ref=e31]:
+                - generic [ref=e32]: JSON Schema
+                - textbox "JSON Schema" [ref=e33]: http://127.0.0.1:8080/openapi.json
+              - button " Сохранить" [disabled] [ref=e34]:
+                - generic [ref=e35]: 
+                - text: Сохранить
+        - generic [ref=e36]:
+          - generic [ref=e37]: "2"
+          - generic [ref=e38]:
+            - text: Запускаете тесты, в качестве базового URL указав адрес на котором запущен
+            - link "инструмент " [ref=e39] [cursor=pointer]:
+              - /url: https://github.com/victoretc/api-coverage-by-swagger
+              - text: инструмент
+              - generic [ref=e40]: 
+            - text: .
+        - generic [ref=e41]:
+          - generic [ref=e42]: "3"
+          - generic [ref=e43]:
+            - text: Обновляете страницу — видите какие эндпоинты уже
+            - strong [ref=e44]: покрыты
+            - text: ", а какие"
+            - strong [ref=e45]: нет
+            - text: .
+        - link "Подробнее тут " [ref=e47] [cursor=pointer]:
+          - /url: https://github.com/victoretc/api-coverage-by-swagger
+          - text: Подробнее тут
+          - generic [ref=e48]: 
+    - generic [ref=e50]:
+      - generic [ref=e51]: Пример отчёта
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: "7"
+              - generic [ref=e61]: эндпоинтов
+            - generic [ref=e63]:
+              - generic [ref=e64]: "1"
+              - generic [ref=e65]: покрыто
+            - generic [ref=e67]:
+              - generic [ref=e68]: "14.29"
+              - generic [ref=e69]: процент покрытия
+          - progressbar [ref=e73]
+        - generic [ref=e74]:
+          - button "Все эндпоинты" [ref=e75] [cursor=pointer]
+          - button "Покрытые" [ref=e76] [cursor=pointer]
+        - button "todos" [ref=e78] [cursor=pointer]
+        - generic [ref=e80]:
+          - generic [ref=e82]: todos
+          - generic [ref=e83]:
+            - generic [ref=e84]: GET
+            - generic [ref=e85]: /todos/
+            - generic [ref=e86]: покрыт
+          - generic [ref=e87]:
+            - generic [ref=e88]: POST
+            - generic [ref=e89]: /todos/
+            - generic [ref=e90]: не покрыт
+          - generic [ref=e91]:
+            - generic [ref=e92]: DELETE
+            - generic [ref=e93]: /todos/
+            - generic [ref=e94]: не покрыт
+          - generic [ref=e95]:
+            - generic [ref=e96]: GET
+            - generic [ref=e97]: "/todos/{todo_id}"
+            - generic [ref=e98]: не покрыт
+          - generic [ref=e99]:
+            - generic [ref=e100]: PUT
+            - generic [ref=e101]: "/todos/{todo_id}"
+            - generic [ref=e102]: не покрыт
+          - generic [ref=e103]:
+            - generic [ref=e104]: DELETE
+            - generic [ref=e105]: "/todos/{todo_id}"
+            - generic [ref=e106]: не покрыт
+          - generic [ref=e107]:
+            - generic [ref=e108]: PATCH
+            - generic [ref=e109]: "/todos/{todo_id}/complete"
+            - generic [ref=e110]: не покрыт
