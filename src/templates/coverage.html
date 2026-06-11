@@ -1,78 +1,95 @@
 {% extends "base.html" %}
+
 {% block title %}Coverage Report{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/coverage.css') }}">
+{% endblock %}
+
 {% block content %}
-<div class="actions">
-    <button class="btn btn--danger" onclick="clearCoverage()">
-        <i class="fas fa-trash-alt"></i> Очистить
-    </button>
-    <button class="btn btn--primary" onclick="refreshCoverage()">
-        <i class="fas fa-sync-alt"></i> Обновить
-    </button>
-</div>
-
-<div class="hero">
-    <div class="hero-grid">
-        <div class="hero-stat">
-            <span class="hero-stat-value">{{ total_endpoints }}</span>
-            <span class="hero-stat-label">эндпоинтов</span>
-        </div>
-        <div class="hero-stat">
-            <span class="hero-stat-value">{{ covered_endpoints_count }}</span>
-            <span class="hero-stat-label">покрыто</span>
-        </div>
-        <div class="hero-stat">
-            <span class="hero-stat-value">{{ coverage_percentage }}%</span>
-            <span class="hero-stat-label">покрытие</span>
+    <div class="row">
+        <div class="col-12">
+                <div class="d-flex flex-column flex-md-row gap-2 justify-content-end mt-3">
+                    <button class="btn btn-danger rounded-5 btn-lg" onclick="clearCoverage()">
+                        <i class="fas fa-trash"></i> Очистить покрытие
+                    </button>
+                    <button class="btn btn-primary rounded-5 btn-lg" onclick="refreshCoverage()">
+                        <i class="fas fa-sync-alt"></i> Обновить покрытие
+                    </button>
+                </div>
         </div>
     </div>
-    <div class="hero-progress-track">
-        <div class="hero-progress-fill" id="progressFill" role="progressbar" style="width:{{ coverage_percentage }}%" aria-valuenow="{{ coverage_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-    <span class="hero-progress-label">{{ coverage_percentage }}% покрыто</span>
-</div>
 
-<div class="card">
-    <div class="filter-group mb-3">
-        <button class="filter-btn filter-btn--on" data-filter="all" onclick="filterEndpoints('all')">Все</button>
-        <button class="filter-btn" data-filter="covered" onclick="filterEndpoints('covered')">Покрытые</button>
-    </div>
-    {% if tags %}
-    <div class="filter-group">
-        {% for tag in tags %}
-        <button class="filter-btn" data-filter="{{ tag }}" onclick="filterEndpoints('{{ tag }}')">{{ tag }}</button>
-        {% endfor %}
-    </div>
-    {% endif %}
-</div>
-
-<div class="mt-4">
-    {% for tag, endpoints in endpoints_by_tags.items() %}
-    <div class="tag-group" data-tag="{{ tag }}">
-        <h2 class="tag-title">{{ tag }}</h2>
-        {% for endpoint in endpoints %}
-        <div class="endpoint" data-tag="{{ tag }}" data-covered="{% if endpoint in covered_endpoints %}true{% else %}false{% endif %}">
-            <div class="endpoint-method method-{{ endpoint.method|lower }}">{{ endpoint.method }}</div>
-            <div class="endpoint-path">{{ endpoint.path }}</div>
-            <div class="endpoint-status{% if endpoint in covered_endpoints %} endpoint-status--on{% endif %}">
-                {% if endpoint in covered_endpoints %}<i class="fas fa-check-circle" style="margin-right:4px"></i>покрыт{% else %}<i class="fas fa-times-circle" style="margin-right:4px"></i>не покрыт{% endif %}
+    <div class="bg-secondary rounded-5 p-4 mt-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+            <div class="col">
+                <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                    <span class="large-text d-block">{{ total_endpoints }}</span>
+                    <span class="small-text">эндпоинтов</span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                    <span class="large-text d-block">{{ covered_endpoints_count }}</span>
+                    <span class="small-text">покрыто</span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                    <span class="large-text d-block">{{ coverage_percentage }}</span>
+                    <span class="small-text">процент покрытия</span>
+                </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ coverage_percentage }}%;" aria-valuenow="{{ coverage_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row rounded-5 mt-4 text-white bg-card p-3">
+        <button class="col-auto bg-secondary rounded-5 me-2 text-block btn-filter" onclick="filterEndpoints('all')">Все эндпоинты</button>
+        <button class="col-auto bg-secondary rounded-5 me-2 text-block btn-filter" onclick="filterEndpoints('covered')">Покрытые</button>
+    </div>
+
+    <div class="row rounded-5 mt-2 card-bg text-white bg-card p-3 d-flex flex-wrap" style="gap: 0.5rem;">
+        {% for tag in tags %}
+            <button class="col-auto bg-secondary rounded-5 text-block btn-filter" onclick="filterEndpoints('{{ tag }}')">{{ tag }}</button>
         {% endfor %}
     </div>
-    {% endfor %}
-</div>
 
-<div id="noResults" class="empty" style="display:none">
-    <div class="empty-icon"><i class="fas fa-search"></i></div>
-    <div class="empty-text">Нет результатов</div>
-</div>
+    <div id="endpoints-container" class="mt-4 mb-4">
+        {% for tag, endpoints in endpoints_by_tags.items() %}
+        <div class="tag-group mt-3" data-tag="{{ tag }}">
+            <div class="text-block text-primary">
+                <span class="medium-text">{{ tag }}</span>
+            </div>
+            {% for endpoint in endpoints %}
+            <div class="endpoint" data-tag="{{ tag }}" data-covered="{% if (endpoint.method, endpoint.path) in covered_endpoints %}true{% else %}false{% endif %}">
+                <div class="method">{{ endpoint.method }}</div>
+                <div class="path text-primary" style="font-weight: bold">{{ endpoint.path }}</div>
+                <div class="status {% if (endpoint.method, endpoint.path) in covered_endpoints %}covered{% endif %}">
+                    {% if (endpoint.method, endpoint.path) in covered_endpoints %}покрыт{% else %}не покрыт{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
 
-<div id="notify" class="notify" role="alert">
-    <span id="notifyMsg"></span>
-</div>
+    <div id="no-results-message" class="bg-danger rounded-5 p-3 text-white text-center" style="display: none;">
+        Нет результатов по вашему запросу.
+    </div>
+
+    <div id="notification" class="notification">
+        <span id="notification-message"></span>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', path='/js/coverage.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/coverage.js') }}"></script>
 {% endblock %}
