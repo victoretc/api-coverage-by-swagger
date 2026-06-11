@@ -22,13 +22,3 @@
 4. In the **JSON Schema URL** field, enter ```http://127.0.0.1:8080/openapi.json```
 5. Run the example app tests 
 6. Refresh the tool page at <http://127.0.0.1:8000>
-
-## Screenshots
-
-![URL form](/assets/url_form.png)
-
-![First view](/assets/first_view.png)
-
-![Covered endpoint on the "Covered" tab](/assets/covered_endpoint.png)
-
-![Simple test example](/assets/simple_test_example.png)
