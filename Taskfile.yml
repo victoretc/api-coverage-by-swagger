@@ -1,0 +1,56 @@
+version: '3'
+
+vars:
+  JSON_SCHEMA_URL: "http://127.0.0.1:8080/openapi.json"
+
+tasks:
+  default:
+    cmds:
+      - task: help
+
+  install-deps:
+    cmds:
+      - poetry install
+
+  fmt:
+    cmds:
+      - poetry run ruff check . --fix --unsafe-fixes
+      - poetry run ruff format
+
+  lint:
+    cmds:
+      - poetry run ruff check .
+
+  test:
+    cmds:
+      - poetry run pytest tests --dead-fixtures
+      - poetry run pytest tests --exitfirst --alluredir=allure-results --cov --cov-report=xml:cov.xml --cov-report=term-missing:skip-covered
+
+
+  run:
+    dir: src
+    cmds:
+      - poetry run uvicorn main:app --port 8000
+
+  example: 
+    dir: example
+    cmds:
+      - poetry run uvicorn app:app --port 8080 --reload
+
+  generate-client:
+    dir: example/tests
+    cmds:
+      - poetry run restcodegen generate -u {{.JSON_SCHEMA_URL}} -s "todo" -a false --api-tags todos
+
+  help:
+    cmds:
+      - |
+        echo "Taskfile for api coverage by swagger tool"
+        echo ""
+        echo "Usage:"
+        echo "  task install-deps       Install dependencies"
+        echo "  task fmt                Format code"
+        echo "  task lint               Lint code"
+        echo "  task test               Run tests"
+        echo "  task help               Show this help message"
+        echo "  task run                Run app"

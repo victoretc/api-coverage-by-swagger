@@ -1,0 +1,84 @@
+:root {
+    --primary-color: #4F6DC2;
+    --secondary-color: #758FD7;
+    --success-color: #97DC8F;
+    --danger-color: #D77578;
+    --progress-bg: #FBFBFE;
+    --card-bg: #F0F2F9;
+    --all-bg: #FBFBFE;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--all-bg);
+    font-family: 'Arial', sans-serif;
+}
+
+.bg-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+/* Переопределение Bootstrap */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.bg-danger {
+    background-color: var(--danger-color) !important;
+    border-color: var(--danger-color) !important;
+}
+
+.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-danger:hover {
+    opacity: 0.9;
+}
+
+.btn i {
+    margin-right: 8px;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    display: none;
+    z-index: 1000;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 20px; opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { bottom: 20px; opacity: 1; }
+    to { bottom: 0; opacity: 0; }
+}
