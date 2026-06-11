@@ -13,9 +13,9 @@
     --secondary-color: #758FD7;
     --success-color: #97DC8F;
     --danger-color: #D77578;
-    --progress-bg: #FBFBFE;
     --card-bg: #F0F2F9;
     --all-bg: #FBFBFE;
+    --progress-bg: #FBFBFE;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -28,10 +28,11 @@ html {
 
 body {
     background-color: var(--all-bg);
-    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif;
     margin: 0;
     color: #333;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* ── Layout ── */
@@ -45,20 +46,21 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 220px;
+    width: 200px;
     height: 100vh;
-    padding: 100px 24px 40px;
-    display: flex;
-    flex-direction: column;
-    z-index: 50;
+    z-index: 100;
     background-color: var(--all-bg);
     border-right: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 20px;
 }
 
 .sidebar nav {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .sidebar a {
@@ -66,30 +68,34 @@ body {
     align-items: center;
     gap: 12px;
     text-decoration: none;
-    color: #888;
-    font-size: 0.9rem;
-    padding: 10px 16px;
-    border-radius: 100px;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    color: #999;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: color 0.2s, background-color 0.2s;
 }
 
 .sidebar a .num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    font-size: 0.75rem;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    font-size: 0.7rem;
     font-weight: 700;
-    background-color: var(--card-bg);
-    color: var(--primary-color);
-    transition: background-color 0.2s ease, color 0.2s ease;
+    background-color: transparent;
+    color: #bbb;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .sidebar a:hover {
-    color: #333;
+    color: var(--primary-color);
     background-color: var(--card-bg);
+}
+
+.sidebar a:hover .num {
+    color: var(--primary-color);
 }
 
 .sidebar a.active {
@@ -110,8 +116,8 @@ body {
     top: 0;
     z-index: 100;
     background-color: var(--all-bg);
-    padding: 12px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 12px 16px;
 }
 
 .mobile-header nav {
@@ -127,13 +133,14 @@ body {
 .mobile-header a {
     flex-shrink: 0;
     text-decoration: none;
-    color: #888;
-    font-size: 0.85rem;
+    color: #999;
+    font-size: 0.82rem;
+    font-weight: 600;
     padding: 8px 18px;
     border-radius: 100px;
     background-color: var(--card-bg);
     white-space: nowrap;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .mobile-header a:hover,
@@ -145,74 +152,71 @@ body {
 /* ── Main Content ── */
 .main-content {
     flex: 1;
-    margin-left: 220px;
+    margin-left: 200px;
 }
 
 .section {
-    scroll-margin-top: 80px;
+    scroll-margin-top: 60px;
 }
 
-.constrained {
-    max-width: 640px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 48px;
-    padding-right: 48px;
-}
-
-/* ── Hero ── */
+/* ── Hero (full width inside main) ── */
 .hero {
-    padding: 100px 0 80px;
+    background-color: var(--primary-color);
+    padding: 100px 60px 90px;
 }
 
-.hero-card {
-    background-color: var(--secondary-color);
-    border-radius: 24px;
-    padding: 64px 56px;
-    box-shadow: var(--shadow);
+.hero-inner {
+    max-width: 640px;
 }
 
 .hero .overline {
     display: inline-block;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 16px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 20px;
 }
 
 .hero h1 {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     line-height: 1.2;
     margin: 0 0 20px;
-    max-width: 640px;
 }
 
 .hero p {
     font-size: 1.05rem;
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.7);
     line-height: 1.7;
     margin: 0;
-    max-width: 520px;
+}
+
+/* ── Constrained content sections ── */
+.constrained {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 60px;
+    padding-right: 60px;
 }
 
 /* ─── How It Works ─── */
 .how-section {
-    padding: 80px 0;
+    padding: 100px 0 90px;
 }
 
 .section-label {
     display: inline-block;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     color: var(--primary-color);
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 }
 
 .steps {
@@ -224,11 +228,10 @@ body {
 .step {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    padding: 20px 24px;
+    gap: 18px;
+    padding: 24px 28px;
     background-color: var(--card-bg);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+    border-radius: 14px;
 }
 
 .step-num {
@@ -237,20 +240,20 @@ body {
     justify-content: center;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
+    border-radius: 8px;
     background-color: var(--primary-color);
     color: #fff;
     font-size: 0.8rem;
     font-weight: 700;
     flex-shrink: 0;
-    margin-top: 3px;
+    margin-top: 2px;
 }
 
 .step-text {
     flex: 1;
     font-size: 0.95rem;
     color: #444;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 .step-text strong {
@@ -259,13 +262,13 @@ body {
 
 /* ─── Report Section ─── */
 .report-section {
-    padding: 80px 0 0;
+    padding: 90px 0 0;
     background-color: var(--all-bg);
 }
 
 .report-section .section-label {
-    padding-left: 48px;
-    padding-right: 48px;
+    padding-left: 60px;
+    padding-right: 60px;
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
@@ -273,7 +276,7 @@ body {
 }
 
 .report-demo {
-    margin-top: 28px;
+    margin-top: 32px;
 }
 
 .report-demo .container-md {
@@ -353,7 +356,7 @@ body {
     border-radius: 100px;
     color: white;
     background-color: var(--secondary-color);
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s;
 }
 
 .report-demo .btn-filter:hover {
@@ -407,25 +410,32 @@ body {
     background-color: var(--success-color);
 }
 
+/* ── Separator ── */
+.section-sep {
+    height: 1px;
+    background-color: rgba(0,0,0,0.05);
+    max-width: 640px;
+    margin: 0 auto;
+}
+
 /* ── Responsive ── */
 @media (max-width: 960px) {
     .sidebar { display: none; }
     .mobile-header { display: block; }
     .main-content { margin-left: 0; }
+    .hero { padding: 60px 32px 56px; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero p { font-size: 0.95rem; }
     .constrained {
         max-width: 100%;
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 32px;
+        padding-right: 32px;
     }
-    .hero { padding: 60px 0 48px; }
-    .hero-card { padding: 48px 40px; border-radius: 20px; }
-    .hero h1 { font-size: 1.8rem; }
-    .hero p { font-size: 1rem; }
-    .how-section { padding: 48px 0; }
-    .report-section { padding: 48px 0 0; }
+    .how-section { padding: 64px 0 56px; }
+    .report-section { padding: 56px 0 0; }
     .report-section .section-label {
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 32px;
+        padding-right: 32px;
     }
     .report-demo .container-md {
         max-width: 100%;
@@ -435,14 +445,17 @@ body {
 }
 
 @media (max-width: 576px) {
-    .hero { padding: 40px 0 32px; }
-    .hero-card { padding: 32px 24px; border-radius: 16px; }
-    .hero h1 { font-size: 1.4rem; }
+    .hero { padding: 48px 24px 44px; }
+    .hero h1 { font-size: 1.5rem; }
     .hero p { font-size: 0.9rem; }
-    .constrained { padding-left: 16px; padding-right: 16px; }
-    .how-section { padding: 32px 0; }
-    .report-section { padding: 32px 0 0; }
-    .step { padding: 16px 18px; }
+    .constrained { padding-left: 24px; padding-right: 24px; }
+    .how-section { padding: 48px 0 40px; }
+    .report-section { padding: 40px 0 0; }
+    .step { padding: 18px 20px; }
+    .report-section .section-label {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
     .report-demo .container-md {
         padding-left: 8px;
         padding-right: 8px;
@@ -491,8 +504,8 @@ body {
     <div class="main-content">
 
         <!-- ─── Hero ─── -->
-        <section id="about" class="section hero constrained">
-            <div class="hero-card">
+        <section id="about" class="section hero">
+            <div class="hero-inner">
                 <span class="overline">API Coverage By Swagger</span>
                 <h1>Понимайте на какие эндпоинты при тестировании вы уже обратили внимание</h1>
                 <p>
@@ -525,6 +538,9 @@ body {
                 </div>
             </div>
         </section>
+
+        <!-- ─── Separator ─── -->
+        <div class="section-sep constrained"></div>
 
         <!-- ─── Report ─── -->
         <section id="report" class="section report-section">
