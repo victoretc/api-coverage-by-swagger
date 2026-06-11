@@ -20,17 +20,15 @@ def _compile_regex(path: str) -> re.Pattern:
     return re.compile(f"^/{'/'.join(regex_parts)}$")
 
 
-class EndpointMatcher:
-    def match(
-        self,
-        method: str,
-        path: str,
-        candidates: frozenset[Endpoint],
-    ) -> Endpoint | None:
-        parsed = path.removeprefix("/proxy").split("?")[0]
-        method = method.upper()
+def match_endpoint(
+    method: str,
+    path: str,
+    candidates: frozenset[Endpoint],
+) -> Endpoint | None:
+    parsed = path.removeprefix("/proxy").split("?")[0]
+    method = method.upper()
 
-        for ep in candidates:
-            if ep.method == method and _compile_regex(ep.path).fullmatch(parsed):
-                return ep
-        return None
+    for ep in candidates:
+        if ep.method == method and _compile_regex(ep.path).fullmatch(parsed):
+            return ep
+    return None

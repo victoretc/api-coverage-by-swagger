@@ -12,17 +12,16 @@ async def get_report(request: Request):
     if not svc.is_initialized:
         return templates.TemplateResponse("url_form.html", {"request": request})
 
-    state = svc.state
     return templates.TemplateResponse(
         "coverage.html",
         {
             "request": request,
-            "total_endpoints": state.total_count,
-            "covered_endpoints_count": state.covered_count,
-            "coverage_percentage": round(state.ratio * 100, 2),
-            "endpoints_by_tags": state.spec.by_tag,
-            "tags": list(state.spec.by_tag),
-            "covered_endpoints": state.covered,
+            "total_endpoints": svc.total_count,
+            "covered_endpoints_count": svc.covered_count,
+            "coverage_percentage": round(svc.ratio * 100, 2),
+            "endpoints_by_tags": svc.spec.by_tag,
+            "tags": list(svc.spec.by_tag),
+            "covered_endpoints": svc.covered,
         },
     )
 
@@ -36,13 +35,13 @@ async def clear_coverage(request: Request):
 @router.post("/refresh_spec")
 async def refresh_spec(request: Request):
     svc = request.app.state.coverage_service
-    if not svc.state or not svc.state.swagger_url:
+    if not svc.is_initialized or not svc.swagger_url:
         raise HTTPException(
             status_code=400,
             detail="Спецификация не загружена",
         )
 
-    if not await svc.initialize(svc.state.swagger_url):
+    if not await svc.initialize(svc.swagger_url):
         raise HTTPException(
             status_code=400,
             detail="Не удалось обновить спецификацию",

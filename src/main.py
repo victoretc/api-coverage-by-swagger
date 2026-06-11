@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.staticfiles import StaticFiles
 
 from core.loader import load_spec
-from core.matcher import EndpointMatcher
+from core.matcher import match_endpoint
 from core.parser import parse_spec
 from routers import report, setup
 from services.coverage import CoverageService
@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     app.state.coverage_service = CoverageService(
         loader=load_spec,
         parser=parse_spec,
-        matcher=EndpointMatcher(),
+        matcher=match_endpoint,
     )
     yield
 

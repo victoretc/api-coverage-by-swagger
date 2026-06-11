@@ -1,52 +1,33 @@
+document.getElementById('urlForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const loader = document.getElementById('loader');
+  loader.style.display = 'block';
 
-document.getElementById('urlForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    // Показываем анимацию загрузки
-    const loader = document.getElementById('loader');
-    loader.style.display = 'block';
-
-    const baseUrl = document.getElementById('base_url').value;
-    const swaggerUrl = document.getElementById('swagger_url').value;
-
-    fetch('/set_urls', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ base_url: baseUrl, swagger_url: swaggerUrl }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Скрываем анимацию загрузки
-        loader.style.display = 'none';
-
-        // Показываем кастомное уведомление
-        const notification = document.getElementById('notification');
-        notification.textContent = data.message;
-        notification.style.display = 'block';
-
-        // Скрываем уведомление через 3 секунды
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 1000);
-
-        // Перезагружаем страницу через 3 секунды
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        loader.style.display = 'none';
-
-        // Показываем ошибку в уведомлении
-        const notification = document.getElementById('notification');
-        notification.textContent = 'Ошибка при сохранении данных';
-        notification.style.display = 'block';
-
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 1000);
+  try {
+    const r = await fetch('/set_urls', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        base_url: document.getElementById('base_url').value,
+        swagger_url: document.getElementById('swagger_url').value,
+      }),
     });
+    const d = await r.json();
+    notify(d.message, 'ok');
+    setTimeout(() => location.reload(), 1000);
+  } catch {
+    notify('Ошибка при сохранении', 'bad');
+  } finally {
+    loader.style.display = 'none';
+  }
 });
+
+function notify(msg, type) {
+  const el = document.getElementById('notify');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'notify' + (type ? ' notify--' + type : '');
+  el.style.display = 'block';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.display = 'none'; }, 3000);
+}
