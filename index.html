@@ -6,6 +6,7 @@
 <title>API Coverage By Swagger</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 <style>
 :root {
     --primary: #4F6DC2;
@@ -14,9 +15,10 @@
     --danger: #D77578;
     --card-bg: #F0F2F9;
     --all-bg: #FBFBFE;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --text: #2c3e50;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    --text: #1a1a2e;
     --text-muted: #8a9bb5;
+    --sidebar-w: 220px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -32,175 +34,83 @@ body {
     margin: 0;
     color: var(--text);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Layout ── */
-.wrapper {
+.layout {
     display: flex;
     min-height: 100vh;
 }
 
-/* ── Sidebar / ToC ── */
+/* ── Sidebar ── */
 .sidebar {
-    position: sticky;
+    position: fixed;
     top: 0;
-    width: 220px;
-    min-width: 220px;
+    left: 0;
+    width: var(--sidebar-w);
     height: 100vh;
-    padding: 2.5rem 1.5rem;
+    padding: 120px 28px 40px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    z-index: 50;
+    background: var(--all-bg);
+    border-right: 1px solid rgba(0,0,0,0.04);
 }
 
 .sidebar nav {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 2px;
 }
 
 .sidebar a {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 14px;
     text-decoration: none;
     color: var(--text-muted);
-    font-size: 0.95rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 100px;
-    transition: all 0.25s ease;
+    font-size: 0.9rem;
     font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    letter-spacing: -0.01em;
 }
 
 .sidebar a .num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--card-bg);
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    background: transparent;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--primary);
+    color: var(--text-muted);
     transition: all 0.25s ease;
 }
 
-.sidebar a:hover,
+.sidebar a:hover {
+    color: var(--text);
+    background: var(--card-bg);
+}
+
+.sidebar a:hover .num {
+    color: var(--primary);
+}
+
 .sidebar a.active {
     color: var(--primary);
     background: var(--card-bg);
+    font-weight: 600;
 }
 
-.sidebar a:hover .num,
 .sidebar a.active .num {
-    background: var(--primary);
     color: #fff;
-}
-
-/* ── Main Content ── */
-.content {
-    flex: 1;
-    max-width: 780px;
-    padding: 4rem 3rem 6rem;
-}
-
-.section {
-    margin-bottom: 5rem;
-}
-
-.section:last-child {
-    margin-bottom: 0;
-}
-
-/* ── Hero ── */
-.hero {
-    padding: 2rem 0 1rem;
-}
-
-.hero h1 {
-    font-size: 2.4rem;
-    font-weight: 800;
-    color: var(--primary);
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    max-width: 560px;
-    line-height: 1.7;
-}
-
-/* ── Section Titles ── */
-.section-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--primary);
-    margin-bottom: 1.5rem;
-}
-
-/* ── Steps ── */
-.steps {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.step {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
-    padding: 1.25rem 1.5rem;
-    background: var(--card-bg);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s ease;
-}
-
-.step:hover {
-    transform: translateX(4px);
-}
-
-.step-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
     background: var(--primary);
-    color: #fff;
-    font-size: 0.9rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 0.1rem;
-}
-
-.step-text {
-    flex: 1;
-    font-size: 1rem;
-    color: var(--text);
-    line-height: 1.6;
-}
-
-.step-text strong {
-    color: var(--primary);
-}
-
-/* ── Report Section ── */
-#report iframe {
-    width: 100%;
-    height: 680px;
-    border: none;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    background: #fff;
-    display: block;
 }
 
 /* ── Mobile Header ── */
@@ -209,18 +119,19 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--all-bg);
-    padding: 0.75rem 1rem;
+    background: rgba(251, 251, 254, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 12px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .mobile-header nav {
     display: flex;
-    gap: 0.5rem;
+    gap: 6px;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-bottom: 2px;
 }
 
 .mobile-header nav::-webkit-scrollbar { display: none; }
@@ -229,9 +140,9 @@ body {
     flex-shrink: 0;
     text-decoration: none;
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
-    padding: 0.4rem 1rem;
+    padding: 8px 18px;
     border-radius: 100px;
     background: var(--card-bg);
     transition: all 0.2s ease;
@@ -244,31 +155,341 @@ body {
     background: var(--primary);
 }
 
-/* ── Active scroll spy ── */
+/* ── Main Content ── */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-w);
+}
+
 .section {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 80px;
+}
+
+/* ── Constrained content blocks ── */
+.constrained {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
+/* ── Hero ── */
+.hero {
+    padding: 100px 0 60px;
+}
+
+.hero .overline {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    margin-bottom: 24px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0 0 28px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 500px;
+}
+
+/* ─── How It Works ─── */
+.how-section {
+    padding: 80px 0;
+}
+
+.section-label {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    margin-bottom: 32px;
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 28px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.step:hover {
+    transform: translateX(6px);
+    box-shadow: 0 8px 20px rgba(79, 109, 194, 0.12);
+}
+
+.step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.step-text {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.step-text strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* ─── Report Section ─── */
+.report-section {
+    padding: 100px 0 0;
+    background: var(--all-bg);
+}
+
+.report-section .section-label {
+    padding-left: 48px;
+    padding-right: 48px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.report-demo {
+    margin-top: 32px;
+}
+
+/* ─── Report Demo Styles (scoped) ─── */
+.report-demo {
+    --primary-color: #4F6DC2;
+    --secondary-color: #758FD7;
+    --success-color: #97DC8F;
+    --danger-color: #D77578;
+    --progress-bg: #FBFBFE;
+    --card-bg: #F0F2F9;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.report-demo .container-md {
+    max-width: 820px;
+}
+
+.report-demo .bg-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.report-demo .text-primary {
+    color: var(--primary-color) !important;
+}
+
+.report-demo .bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.report-demo .bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.report-demo .bg-danger {
+    background-color: var(--danger-color) !important;
+    border-color: var(--danger-color) !important;
+}
+
+.report-demo .progress {
+    height: 30px;
+    background-color: var(--progress-bg);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.report-demo .progress-bar {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.report-demo .text-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    height: 100%;
+}
+
+.report-demo .text-block span {
+    display: block;
+    line-height: 1.2;
+}
+
+.report-demo .text-block .large-text {
+    font-size: 64px;
+    font-weight: bold;
+}
+
+.report-demo .text-block .medium-text {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.report-demo .text-block .small-text {
+    font-size: 16px;
+}
+
+.report-demo .btn-filter {
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 100px;
+    color: white;
+    background-color: var(--secondary-color);
+}
+
+.report-demo .btn-filter:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.report-demo .btn-filter:active {
+    transform: scale(0.95);
+}
+
+.report-demo .endpoint {
+    display: grid;
+    grid-template-columns: 100px 1fr 100px;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    margin: 10px 0;
+    border-radius: 10px;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+}
+
+.report-demo .endpoint .method,
+.report-demo .endpoint .status {
+    text-align: center;
+    padding: 6px 12px;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.report-demo .endpoint .method {
+    background-color: var(--secondary-color);
+}
+
+.report-demo .endpoint .path {
+    color: var(--primary-color);
+    font-weight: bold;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    font-size: 0.95rem;
+}
+
+.report-demo .endpoint .path::-webkit-scrollbar {
+    display: none;
+}
+
+.report-demo .endpoint .status {
+    background-color: var(--danger-color);
+}
+
+.report-demo .endpoint .status.covered {
+    background-color: var(--success-color);
+}
+
+/* ── Scroll Spy ── */
+.sidebar a,
+.mobile-header a {
+    transition: all 0.25s ease;
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
+@media (max-width: 960px) {
     .sidebar { display: none; }
     .mobile-header { display: block; }
-    .content {
+    .main-content { margin-left: 0; }
+    .constrained {
         max-width: 100%;
-        padding: 2rem 1.5rem 4rem;
+        padding-left: 24px;
+        padding-right: 24px;
     }
-    .hero h1 { font-size: 1.8rem; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 2.2rem; }
     .hero p { font-size: 1.05rem; }
-    #report iframe { height: 520px; }
+    .how-section { padding: 48px 0; }
+    .report-section { padding: 60px 0 0; }
+    .report-section .section-label {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    .report-demo .container-md {
+        max-width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }
 
 @media (max-width: 576px) {
-    .content { padding: 1.5rem 1rem 3rem; }
-    .hero h1 { font-size: 1.5rem; }
+    .hero { padding: 40px 0 32px; }
+    .hero h1 { font-size: 1.7rem; }
     .hero p { font-size: 0.95rem; }
-    .step { padding: 1rem 1.25rem; }
-    .section { margin-bottom: 3rem; }
-    #report iframe { height: 440px; }
+    .constrained { padding-left: 16px; padding-right: 16px; }
+    .how-section { padding: 32px 0; }
+    .report-section { padding: 40px 0 0; }
+    .step { padding: 18px 20px; }
+    .report-demo .container-md {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    .report-demo .text-block .large-text { font-size: 48px; }
+    .report-demo .text-block .small-text { font-size: 14px; }
+    .report-demo .endpoint { grid-template-columns: 1fr; text-align: center; }
+    .report-demo .endpoint .path { white-space: nowrap; }
+}
+
+@media (max-width: 400px) {
+    .report-demo .text-block .large-text { font-size: 36px; }
+    .report-demo .text-block .small-text { font-size: 13px; }
 }
 </style>
 </head>
@@ -282,7 +503,8 @@ body {
     </nav>
 </div>
 
-<div class="wrapper">
+<div class="layout">
+
     <aside class="sidebar">
         <nav>
             <a href="#about" class="active">
@@ -300,21 +522,20 @@ body {
         </nav>
     </aside>
 
-    <main class="content">
+    <div class="main-content">
 
-        <!-- ─── Section 1: About ─── -->
-        <section id="about" class="section hero">
-            <span class="section-title">О проекте</span>
-            <h1>API Coverage By Swagger</h1>
+        <!-- ─── Hero ─── -->
+        <section id="about" class="section hero constrained">
+            <span class="overline">API Coverage By Swagger</span>
+            <h1>Понимайте, какие эндпоинты<br>уже под покрытием</h1>
             <p>
-                Понимайте, на какие эндпоинты при тестировании вы уже обратили внимание,
-                а какие остались без покрытия.
+                Инструмент показывает, на какие эндпоинты при тестировании вы уже обратили внимание, а какие остались без покрытия.
             </p>
         </section>
 
-        <!-- ─── Section 2: How It Works ─── -->
-        <section id="how" class="section">
-            <span class="section-title">Как работает</span>
+        <!-- ─── How It Works ─── -->
+        <section id="how" class="section how-section constrained">
+            <span class="section-label">Как работает</span>
             <div class="steps">
                 <div class="step">
                     <span class="step-num">1</span>
@@ -331,247 +552,128 @@ body {
                 <div class="step">
                     <span class="step-num">3</span>
                     <div class="step-text">
-                        Обновите страницу — инструмент покажет, какие эндпоинты <strong>покрыты</strong> тестами,
-                        а какие ещё <strong>нет</strong>.
+                        Обновите страницу — инструмент покажет, какие эндпоинты <strong>покрыты</strong> тестами, а какие ещё <strong>нет</strong>.
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ─── Section 3: Live Report ─── -->
-        <section id="report" class="section">
-            <span class="section-title">Пример отчёта</span>
-            <iframe id="report-frame" title="Пример отчёта"></iframe>
+        <!-- ─── Report ─── -->
+        <section id="report" class="section report-section">
+            <span class="section-label">Пример отчёта</span>
+            <div class="report-demo">
+                <div class="container-md">
+                    <div class="row mt-4">
+                        <div class="col-md">
+                            <div class="bg-secondary rounded-5 p-4">
+                                <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+                                    <div class="col">
+                                        <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                                            <span class="large-text d-block">7</span>
+                                            <span class="small-text">эндпоинтов</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                                            <span class="large-text d-block">1</span>
+                                            <span class="small-text">покрыто</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                                            <span class="large-text d-block">14.29</span>
+                                            <span class="small-text">процент покрытия</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 14.29%;" aria-valuenow="14.29" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rounded-5 mt-4 text-white bg-card p-3" style="gap: 0.5rem;">
+                                <button class="col-auto btn-filter" onclick="filterEndpoints('all')">Все эндпоинты</button>
+                                <button class="col-auto btn-filter" onclick="filterEndpoints('covered')">Покрытые</button>
+                            </div>
+
+                            <div class="row rounded-5 mt-2 text-white bg-card p-3 d-flex flex-wrap" style="gap: 0.75rem;">
+                                <button class="col-auto btn-filter" onclick="filterEndpoints('todos')">todos</button>
+                            </div>
+
+                            <div id="endpoints-container" class="mt-4 mb-4">
+                                <div class="tag-group mt-3" data-tag="todos">
+                                    <div class="text-block text-primary">
+                                        <span class="medium-text">todos</span>
+                                    </div>
+                                    <div class="endpoint" data-tag="todos" data-covered="true">
+                                        <div class="method">GET</div>
+                                        <div class="path">/todos/</div>
+                                        <div class="status covered">покрыт</div>
+                                    </div>
+                                    <div class="endpoint" data-tag="todos" data-covered="false">
+                                        <div class="method">POST</div>
+                                        <div class="path">/todos/</div>
+                                        <div class="status">не покрыт</div>
+                                    </div>
+                                    <div class="endpoint" data-tag="todos" data-covered="false">
+                                        <div class="method">DELETE</div>
+                                        <div class="path">/todos/</div>
+                                        <div class="status">не покрыт</div>
+                                    </div>
+                                    <div class="endpoint" data-tag="todos" data-covered="false">
+                                        <div class="method">GET</div>
+                                        <div class="path">/todos/{todo_id}</div>
+                                        <div class="status">не покрыт</div>
+                                    </div>
+                                    <div class="endpoint" data-tag="todos" data-covered="false">
+                                        <div class="method">PUT</div>
+                                        <div class="path">/todos/{todo_id}</div>
+                                        <div class="status">не покрыт</div>
+                                    </div>
+                                    <div class="endpoint" data-tag="todos" data-covered="false">
+                                        <div class="method">DELETE</div>
+                                        <div class="path">/todos/{todo_id}</div>
+                                        <div class="status">не покрыт</div>
+                                    </div>
+                                    <div class="endpoint" data-tag="todos" data-covered="false">
+                                        <div class="method">PATCH</div>
+                                        <div class="path">/todos/{todo_id}/complete</div>
+                                        <div class="status">не покрыт</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="no-results-message" class="bg-danger rounded-5 p-3 text-white text-center" style="display: none;">
+                                Нет результатов по вашему запросу.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-    </main>
-</div>
-
-<script>
-// ── Populate report iframe ──
-const reportHTML = `<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coverage Report</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<style>
-:root {
-    --primary-color: #4F6DC2;
-    --secondary-color: #758FD7;
-    --success-color: #97DC8F;
-    --danger-color: #D77578;
-    --progress-bg: #FBFBFE;
-    --card-bg: #F0F2F9;
-    --all-bg: #FBFBFE;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-*, *::before, *::after { box-sizing: border-box; }
-body {
-    background-color: var(--all-bg);
-    font-family: 'Arial', 'Helvetica', sans-serif;
-    margin: 0;
-}
-.container-md { max-width: 1140px; }
-.bg-card {
-    background-color: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-}
-.text-primary { color: var(--primary-color) !important; }
-.bg-primary { background-color: var(--primary-color) !important; }
-.bg-secondary { background-color: var(--secondary-color) !important; }
-.bg-danger {
-    background-color: var(--danger-color) !important;
-    border-color: var(--danger-color) !important;
-}
-.progress {
-    height: 30px;
-    background-color: var(--progress-bg);
-    border-radius: 10px;
-    overflow: hidden;
-}
-.progress-bar {
-    background-color: var(--primary-color);
-    border-radius: 10px;
-    transition: width 0.5s ease;
-}
-.text-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    height: 100%;
-}
-.text-block span { display: block; line-height: 1.2; }
-.text-block .large-text { font-size: 64px; font-weight: bold; }
-.text-block .medium-text { font-size: 24px; font-weight: bold; }
-.text-block .small-text { font-size: 16px; }
-.btn-filter {
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 100px;
-    color: white;
-    background-color: var(--secondary-color);
-}
-.btn-filter:hover {
-    background-color: var(--primary-color);
-    transform: scale(1.05);
-}
-.btn-filter:active { transform: scale(0.95); }
-.endpoint {
-    display: grid;
-    grid-template-columns: 100px 1fr 100px;
-    gap: 10px;
-    align-items: center;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    background-color: var(--card-bg);
-    box-shadow: var(--shadow);
-}
-.endpoint .method,
-.endpoint .status {
-    text-align: center;
-    padding: 6px;
-    border-radius: 10px;
-    color: white;
-}
-.endpoint .method { background-color: var(--secondary-color); }
-.endpoint .path {
-    color: var(--primary-color);
-    font-weight: bold;
-    white-space: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-.endpoint .path::-webkit-scrollbar { display: none; }
-.endpoint .status { background-color: var(--danger-color); }
-.endpoint .status.covered { background-color: var(--success-color); }
-@media (max-width: 768px) {
-    .text-block .large-text { font-size: 48px; }
-    .text-block .small-text { font-size: 14px; }
-    .endpoint { grid-template-columns: 1fr; text-align: center; }
-    .endpoint .path { white-space: nowrap; }
-}
-@media (max-width: 576px) {
-    .text-block .large-text { font-size: 36px; }
-    .text-block .small-text { font-size: 13px; }
-}
-</style>
-</head>
-<body>
-<div class="container-md">
-    <div class="row mt-4">
-        <div class="col-md">
-            <div class="bg-secondary rounded-5 p-4">
-                <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
-                    <div class="col">
-                        <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
-                            <span class="large-text d-block">7</span>
-                            <span class="small-text">эндпоинтов</span>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
-                            <span class="large-text d-block">1</span>
-                            <span class="small-text">покрыто</span>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
-                            <span class="large-text d-block">14.29</span>
-                            <span class="small-text">процент покрытия</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 14.29%;" aria-valuenow="14.29" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row rounded-5 mt-4 text-white bg-card p-3" style="gap: 0.5rem;">
-                <button class="col-auto btn-filter" onclick="filterEndpoints('all')">Все эндпоинты</button>
-                <button class="col-auto btn-filter" onclick="filterEndpoints('covered')">Покрытые</button>
-            </div>
-
-            <div class="row rounded-5 mt-2 card-bg text-white bg-card p-3 d-flex flex-wrap" style="gap: 0.75rem;">
-                <button class="col-auto btn-filter" onclick="filterEndpoints('todos')">todos</button>
-            </div>
-
-            <div id="endpoints-container" class="mt-4 mb-4">
-                <div class="tag-group mt-3" data-tag="todos">
-                    <div class="text-block text-primary">
-                        <span class="medium-text">todos</span>
-                    </div>
-                    <div class="endpoint" data-tag="todos" data-covered="true">
-                        <div class="method">GET</div>
-                        <div class="path">/todos/</div>
-                        <div class="status covered">покрыт</div>
-                    </div>
-                    <div class="endpoint" data-tag="todos" data-covered="false">
-                        <div class="method">POST</div>
-                        <div class="path">/todos/</div>
-                        <div class="status">не покрыт</div>
-                    </div>
-                    <div class="endpoint" data-tag="todos" data-covered="false">
-                        <div class="method">DELETE</div>
-                        <div class="path">/todos/</div>
-                        <div class="status">не покрыт</div>
-                    </div>
-                    <div class="endpoint" data-tag="todos" data-covered="false">
-                        <div class="method">GET</div>
-                        <div class="path">/todos/{todo_id}</div>
-                        <div class="status">не покрыт</div>
-                    </div>
-                    <div class="endpoint" data-tag="todos" data-covered="false">
-                        <div class="method">PUT</div>
-                        <div class="path">/todos/{todo_id}</div>
-                        <div class="status">не покрыт</div>
-                    </div>
-                    <div class="endpoint" data-tag="todos" data-covered="false">
-                        <div class="method">DELETE</div>
-                        <div class="path">/todos/{todo_id}</div>
-                        <div class="status">не покрыт</div>
-                    </div>
-                    <div class="endpoint" data-tag="todos" data-covered="false">
-                        <div class="method">PATCH</div>
-                        <div class="path">/todos/{todo_id}/complete</div>
-                        <div class="status">не покрыт</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="no-results-message" class="bg-danger rounded-5 p-3 text-white text-center" style="display: none;">
-                Нет результатов по вашему запросу.
-            </div>
-        </div>
     </div>
 </div>
+
 <script>
 function filterEndpoints(tag) {
-    const tagGroups = document.querySelectorAll('.tag-group');
-    const noResultsMessage = document.getElementById('no-results-message');
-    let hasVisibleResults = false;
+    var tagGroups = document.querySelectorAll('.report-demo .tag-group');
+    var noResultsMessage = document.querySelector('.report-demo #no-results-message');
+    var hasVisibleResults = false;
+
     tagGroups.forEach(function (group) {
-        const groupEndpoints = group.querySelectorAll('.endpoint');
-        let groupHasVisibleEndpoints = false;
+        var groupEndpoints = group.querySelectorAll('.endpoint');
+        var groupHasVisibleEndpoints = false;
+
         groupEndpoints.forEach(function (endpoint) {
-            const isCovered = endpoint.getAttribute('data-covered') === 'true';
-            const endpointTag = endpoint.getAttribute('data-tag');
-            let visible = false;
+            var isCovered = endpoint.getAttribute('data-covered') === 'true';
+            var endpointTag = endpoint.getAttribute('data-tag');
+            var visible = false;
+
             if (tag === 'all') {
                 visible = true;
             } else if (tag === 'covered') {
@@ -579,41 +681,47 @@ function filterEndpoints(tag) {
             } else {
                 visible = endpointTag === tag;
             }
+
             endpoint.style.display = visible ? 'grid' : 'none';
+
             if (visible) {
                 groupHasVisibleEndpoints = true;
             }
         });
+
         group.style.display = groupHasVisibleEndpoints ? 'block' : 'none';
+
         if (groupHasVisibleEndpoints) {
             hasVisibleResults = true;
         }
     });
+
     noResultsMessage.style.display = hasVisibleResults ? 'none' : 'block';
 }
-<\/script>
-</body>
-</html>`;
 
-document.getElementById('report-frame').srcdoc = reportHTML;
+(function () {
+    var sections = document.querySelectorAll('.section');
+    var links = document.querySelectorAll('.sidebar a, .mobile-header a');
 
-// ── Scroll spy ──
-const sections = document.querySelectorAll('.section');
-const links = document.querySelectorAll('.sidebar a, .mobile-header a');
+    function updateActive() {
+        var current = '';
+        sections.forEach(function (s) {
+            var top = s.getBoundingClientRect().top;
+            if (top <= 180) current = s.id;
+        });
+        links.forEach(function (a) {
+            if (a.getAttribute('href') === '#' + current) {
+                a.classList.add('active');
+            } else {
+                a.classList.remove('active');
+            }
+        });
+    }
 
-function updateActive() {
-    let current = '';
-    sections.forEach(s => {
-        const top = s.getBoundingClientRect().top;
-        if (top <= 150) current = s.id;
-    });
-    links.forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-    });
-}
-
-window.addEventListener('scroll', updateActive);
-updateActive();
+    window.addEventListener('scroll', updateActive);
+    updateActive();
+})();
 </script>
+
 </body>
 </html>
