@@ -14,6 +14,10 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
+.container-md {
+    max-width: 1140px;
+}
+
 .bg-card {
     background-color: var(--card-bg);
     border-radius: 10px;
@@ -70,7 +74,7 @@ body {
     box-shadow: var(--shadow);
     display: none;
     z-index: 1000;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.3s ease;
 }
 
 @keyframes fadein {
@@ -78,7 +82,4 @@ body {
     to { bottom: 20px; opacity: 1; }
 }
 
-@keyframes fadeout {
-    from { bottom: 20px; opacity: 1; }
-    to { bottom: 0; opacity: 0; }
-}
+

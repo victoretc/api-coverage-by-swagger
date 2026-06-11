@@ -1,11 +1,9 @@
 function filterEndpoints(tag) {
     const tagGroups = document.querySelectorAll('.tag-group');
-    const endpoints = document.querySelectorAll('.endpoint');
     const noResultsMessage = document.getElementById('no-results-message');
     let hasVisibleResults = false;
 
     tagGroups.forEach(group => {
-        const groupTag = group.getAttribute('data-tag');
         const groupEndpoints = group.querySelectorAll('.endpoint');
         let groupHasVisibleEndpoints = false;
 
@@ -89,13 +87,13 @@ async function refreshCoverage() {
         });
 
         if (response.ok) {
-            showNotification('Спецификация успешно обновлена', 'success');
+            showNotification('Спецификация успешно обновлена');
             setTimeout(() => location.reload(), 1500);
         } else {
             const error = await response.json();
-            showNotification(error.detail || 'Ошибка при обновлении', 'error');
+            showNotification(error.detail || 'Ошибка при обновлении');
         }
     } catch (error) {
-        showNotification('Ошибка сети: ' + error.message, 'error');
+        showNotification('Ошибка сети: ' + error.message);
     }
 }
