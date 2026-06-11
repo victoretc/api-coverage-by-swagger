@@ -1,24 +1,9 @@
-# API Coverage By Swagger 
+# Понимайте на какие эндпоинты при тестировании вы уже обратили внимание, а на какие нет.
 
-## Launch 
+## Запуск
 
-1. install poetry: <https://python-poetry.org/docs/>
-2. install task: <https://taskfile.dev/installation/>
-3. ```task install-deps```
-4. ```task run```
-5. open <http://127.0.0.1:8000> 
-
-## Usage
-
-### Run example app <https://github.com/victoretc/example-fastapi-todo-app>
-
-### Integration
-1. By UI - <http://127.0.0.1:8000/>
-2. By API - <http://127.0.0.1:8000/docs> 
-
-### Integration By UI:
-2. open <http://127.0.0.1:8000> 
-3. In the **Base URL** field, enter ```http://127.0.0.1:8080```
-4. In the **JSON Schema URL** field, enter ```http://127.0.0.1:8080/openapi.json```
-5. Run the example app tests 
-6. Refresh the tool page at <http://127.0.0.1:8000>
+1.* Ставим poetry: <https://python-poetry.org/docs/>
+2. Ставим task: <https://taskfile.dev/installation/>
+3.* ```task install-deps``` или ```poetry install```
+4.* ```task run``` или ```cd src && poetry run uvicorn main:app --port 8000```
+5. Открываем <http://127.0.0.1:8000> для интеграции через веб интерфейс и <http://127.0.0.1:8000/docs> для интеграции через апи. 

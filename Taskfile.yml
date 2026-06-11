@@ -1,8 +1,5 @@
 version: '3'
 
-vars:
-  JSON_SCHEMA_URL: "http://127.0.0.1:8080/openapi.json"
-
 tasks:
   default:
     cmds:
@@ -32,15 +29,6 @@ tasks:
     cmds:
       - poetry run uvicorn main:app --port 8000
 
-  example: 
-    dir: example
-    cmds:
-      - poetry run uvicorn app:app --port 8080 --reload
-
-  generate-client:
-    dir: example/tests
-    cmds:
-      - poetry run restcodegen generate -u {{.JSON_SCHEMA_URL}} -s "todo" -a false --api-tags todos
 
   help:
     cmds:
