@@ -1,11 +1,10 @@
 <p align="center">
-  <img src="https://github.com/victoretc/api-coverage-by-swagger/actions/workflows/ci.yml/badge.svg" alt="CI">
-</p>
-
-<p align="center">
   <img src="assets/coverage.png" alt="Скриншот приложения" width="700">
 </p>
 
+<p align="center">
+  <img src="https://github.com/victoretc/api-coverage-by-swagger/actions/workflows/ci.yml/badge.svg" alt="CI">
+</p>
 
 ---
 
