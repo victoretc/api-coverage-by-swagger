@@ -10,11 +10,7 @@
 
 ## Usage
 
-Inside the project, in the example directory, there is an example of a simple FastAPI application and API tests for it, which demonstrate how the tool works.
-
-### Run app example 
-1. ```task example```
-2. open <http://127.0.0.1:8080> 
+### Run example app <https://github.com/victoretc/example-fastapi-todo-app>
 
 ### Integration
 1. By UI - <http://127.0.0.1:8000/>
@@ -24,7 +20,7 @@ Inside the project, in the example directory, there is an example of a simple Fa
 2. open <http://127.0.0.1:8000> 
 3. In the **Base URL** field, enter ```http://127.0.0.1:8080```
 4. In the **JSON Schema URL** field, enter ```http://127.0.0.1:8080/openapi.json```
-5. Run the tests with the command ```poetry run pytest example --alluredir=allure-results```
+5. Run the example app tests 
 6. Refresh the tool page at <http://127.0.0.1:8000>
 
 ## Screenshots
