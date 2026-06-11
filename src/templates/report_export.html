@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coverage Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4F6DC2;
+            --secondary-color: #758FD7;
+            --success-color: #97DC8F;
+            --danger-color: #D77578;
+            --progress-bg: #FBFBFE;
+            --card-bg: #F0F2F9;
+            --all-bg: #FBFBFE;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            background-color: var(--all-bg);
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            margin: 0;
+        }
+        .container-md { max-width: 1140px; }
+        .bg-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        .text-primary { color: var(--primary-color) !important; }
+        .bg-primary { background-color: var(--primary-color) !important; }
+        .bg-secondary { background-color: var(--secondary-color) !important; }
+        .bg-danger {
+            background-color: var(--danger-color) !important;
+            border-color: var(--danger-color) !important;
+        }
+        .progress {
+            height: 30px;
+            background-color: var(--progress-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .text-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            height: 100%;
+        }
+        .text-block span { display: block; line-height: 1.2; }
+        .text-block .large-text { font-size: 64px; font-weight: bold; }
+        .text-block .medium-text { font-size: 24px; font-weight: bold; }
+        .text-block .small-text { font-size: 16px; }
+        .btn-filter {
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 100px;
+            color: white;
+            background-color: var(--secondary-color);
+        }
+        .btn-filter:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+        .btn-filter:active { transform: scale(0.95); }
+        .endpoint {
+            display: grid;
+            grid-template-columns: 100px 1fr 100px;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+        }
+        .endpoint .method,
+        .endpoint .status {
+            text-align: center;
+            padding: 6px;
+            border-radius: 10px;
+            color: white;
+        }
+        .endpoint .method { background-color: var(--secondary-color); }
+        .endpoint .path {
+            color: var(--primary-color);
+            font-weight: bold;
+            white-space: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .endpoint .path::-webkit-scrollbar { display: none; }
+        .endpoint .status { background-color: var(--danger-color); }
+        .endpoint .status.covered { background-color: var(--success-color); }
+        @media (max-width: 768px) {
+            .text-block .large-text { font-size: 48px; }
+            .text-block .small-text { font-size: 14px; }
+            .endpoint { grid-template-columns: 1fr; text-align: center; }
+            .endpoint .path { white-space: nowrap; }
+        }
+        @media (max-width: 576px) {
+            .text-block .large-text { font-size: 36px; }
+            .text-block .small-text { font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-md">
+        <div class="row mt-4">
+            <div class="col-md">
+                <div class="bg-secondary rounded-5 p-4">
+                    <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+                        <div class="col">
+                            <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                                <span class="large-text d-block">{{ total_endpoints }}</span>
+                                <span class="small-text">эндпоинтов</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                                <span class="large-text d-block">{{ covered_endpoints_count }}</span>
+                                <span class="small-text">покрыто</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
+                                <span class="large-text d-block">{{ coverage_percentage }}</span>
+                                <span class="small-text">процент покрытия</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ coverage_percentage }}%;" aria-valuenow="{{ coverage_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row rounded-5 mt-4 text-white bg-card p-3" style="gap: 0.5rem;">
+                    <button class="col-auto btn-filter" onclick="filterEndpoints('all')">Все эндпоинты</button>
+                    <button class="col-auto btn-filter" onclick="filterEndpoints('covered')">Покрытые</button>
+                </div>
+
+                <div class="row rounded-5 mt-2 card-bg text-white bg-card p-3 d-flex flex-wrap" style="gap: 0.75rem;">
+                    {% for tag in tags %}
+                        <button class="col-auto btn-filter" onclick="filterEndpoints('{{ tag }}')">{{ tag }}</button>
+                    {% endfor %}
+                </div>
+
+                <div id="endpoints-container" class="mt-4 mb-4">
+                    {% for tag, endpoints in endpoints_by_tags.items() %}
+                    <div class="tag-group mt-3" data-tag="{{ tag }}">
+                        <div class="text-block text-primary">
+                            <span class="medium-text">{{ tag }}</span>
+                        </div>
+                        {% for endpoint in endpoints %}
+                        <div class="endpoint" data-tag="{{ tag }}" data-covered="{% if endpoint in covered_endpoints %}true{% else %}false{% endif %}">
+                            <div class="method">{{ endpoint.method }}</div>
+                            <div class="path">{{ endpoint.path }}</div>
+                            <div class="status {% if endpoint in covered_endpoints %}covered{% endif %}">
+                                {% if endpoint in covered_endpoints %}покрыт{% else %}не покрыт{% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div id="no-results-message" class="bg-danger rounded-5 p-3 text-white text-center" style="display: none;">
+                    Нет результатов по вашему запросу.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterEndpoints(tag) {
+            const tagGroups = document.querySelectorAll('.tag-group');
+            const noResultsMessage = document.getElementById('no-results-message');
+            let hasVisibleResults = false;
+
+            tagGroups.forEach(function (group) {
+                const groupEndpoints = group.querySelectorAll('.endpoint');
+                let groupHasVisibleEndpoints = false;
+
+                groupEndpoints.forEach(function (endpoint) {
+                    const isCovered = endpoint.getAttribute('data-covered') === 'true';
+                    const endpointTag = endpoint.getAttribute('data-tag');
+                    let visible = false;
+
+                    if (tag === 'all') {
+                        visible = true;
+                    } else if (tag === 'covered') {
+                        visible = isCovered;
+                    } else {
+                        visible = endpointTag === tag;
+                    }
+
+                    endpoint.style.display = visible ? 'grid' : 'none';
+
+                    if (visible) {
+                        groupHasVisibleEndpoints = true;
+                    }
+                });
+
+                group.style.display = groupHasVisibleEndpoints ? 'block' : 'none';
+
+                if (groupHasVisibleEndpoints) {
+                    hasVisibleResults = true;
+                }
+            });
+
+            noResultsMessage.style.display = hasVisibleResults ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>

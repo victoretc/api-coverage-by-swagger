@@ -26,6 +26,26 @@ async def get_report(request: Request):
     )
 
 
+@router.get("/export", response_class=HTMLResponse)
+async def export_report(request: Request):
+    svc = request.app.state.coverage_service
+    if not svc.is_initialized:
+        raise HTTPException(status_code=400, detail="Спецификация не загружена")
+
+    return templates.TemplateResponse(
+        "report_export.html",
+        {
+            "request": request,
+            "total_endpoints": svc.total_count,
+            "covered_endpoints_count": svc.covered_count,
+            "coverage_percentage": round(svc.ratio * 100, 2),
+            "endpoints_by_tags": svc.spec.by_tag,
+            "tags": list(svc.spec.by_tag),
+            "covered_endpoints": svc.covered,
+        },
+    )
+
+
 @router.post("/clear_coverage")
 async def clear_coverage(request: Request):
     request.app.state.coverage_service.clear()
