@@ -1,4 +1,5 @@
-from src.core.parser import get_endpoints_by_tags, get_endpoints
+from core.parser import parse_spec
+from models import Endpoint
 
 sample_spec = {
     "swagger": "2.0",
@@ -26,49 +27,61 @@ sample_spec = {
     },
 }
 
-
-def test_get_endpoints():
-    result = get_endpoints(sample_spec)
-
-    expected = [
-        {"method": "POST", "path": "/pet/{petId}/uploadImage"},
-        {"method": "POST", "path": "/pet"},
-        {"method": "PUT", "path": "/pet"},
-        {"method": "GET", "path": "/pet/findByStatus"},
-        {"method": "GET", "path": "/store/inventory"},
-        {"method": "GET", "path": "/user/{username}"},
-        {"method": "GET", "path": "/untagged/endpoint"},
+expected_endpoints = frozenset(
+    [
+        Endpoint(method="POST", path="/pet/{petId}/uploadImage", tags=("pet",)),
+        Endpoint(method="POST", path="/pet", tags=("pet",)),
+        Endpoint(method="PUT", path="/pet", tags=("pet",)),
+        Endpoint(method="GET", path="/pet/findByStatus", tags=("pet",)),
+        Endpoint(method="GET", path="/store/inventory", tags=("store",)),
+        Endpoint(method="GET", path="/user/{username}", tags=("user",)),
+        Endpoint(method="GET", path="/untagged/endpoint", tags=("default",)),
     ]
-
-    assert len(result) == len(expected)
-    for item in expected:
-        assert item in result
+)
 
 
-def test_get_endpoints_by_tags():
-    result = get_endpoints_by_tags(sample_spec)
+def test_parse_spec_all_endpoints():
+    result = parse_spec(sample_spec)
+    assert len(result.all_endpoints) == len(expected_endpoints)
+    for ep in expected_endpoints:
+        assert ep in result.all_endpoints
 
-    expected = {
-        "pet": [
-            {"method": "POST", "path": "/pet/{petId}/uploadImage"},
-            {"method": "POST", "path": "/pet"},
-            {"method": "PUT", "path": "/pet"},
-            {"method": "GET", "path": "/pet/findByStatus"},
-        ],
-        "store": [{"method": "GET", "path": "/store/inventory"}],
-        "user": [{"method": "GET", "path": "/user/{username}"}],
-        "default": [{"method": "GET", "path": "/untagged/endpoint"}],
-    }
 
-    assert set(result.keys()) == set(expected.keys())
-    for tag in expected:
-        assert len(result[tag]) == len(expected[tag])
-        for endpoint in expected[tag]:
-            assert endpoint in result[tag]
+def test_parse_spec_by_tag():
+    result = parse_spec(sample_spec)
+
+    assert set(result.by_tag) == {"pet", "store", "user", "default"}
+
+    assert len(result.by_tag["pet"]) == 4
+    for ep in (
+        Endpoint(method="POST", path="/pet/{petId}/uploadImage", tags=("pet",)),
+        Endpoint(method="POST", path="/pet", tags=("pet",)),
+        Endpoint(method="PUT", path="/pet", tags=("pet",)),
+        Endpoint(method="GET", path="/pet/findByStatus", tags=("pet",)),
+    ):
+        assert ep in result.by_tag["pet"]
+
+    assert len(result.by_tag["store"]) == 1
+    assert (
+        Endpoint(method="GET", path="/store/inventory", tags=("store",))
+        in result.by_tag["store"]
+    )
+
+    assert len(result.by_tag["user"]) == 1
+    assert (
+        Endpoint(method="GET", path="/user/{username}", tags=("user",))
+        in result.by_tag["user"]
+    )
+
+    assert len(result.by_tag["default"]) == 1
+    assert (
+        Endpoint(method="GET", path="/untagged/endpoint", tags=("default",))
+        in result.by_tag["default"]
+    )
 
 
 def test_empty_spec():
     empty_spec = {"swagger": "2.0", "paths": {}}
-
-    assert get_endpoints(empty_spec) == []
-    assert get_endpoints_by_tags(empty_spec) == {}
+    result = parse_spec(empty_spec)
+    assert result.all_endpoints == frozenset()
+    assert result.by_tag == {}

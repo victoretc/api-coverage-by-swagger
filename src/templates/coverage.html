@@ -69,11 +69,11 @@
                 <span class="medium-text">{{ tag }}</span>
             </div>
             {% for endpoint in endpoints %}
-            <div class="endpoint" data-tag="{{ tag }}" data-covered="{% if (endpoint.method, endpoint.path) in covered_endpoints %}true{% else %}false{% endif %}">
+            <div class="endpoint" data-tag="{{ tag }}" data-covered="{% if endpoint in covered_endpoints %}true{% else %}false{% endif %}">
                 <div class="method">{{ endpoint.method }}</div>
                 <div class="path text-primary" style="font-weight: bold">{{ endpoint.path }}</div>
-                <div class="status {% if (endpoint.method, endpoint.path) in covered_endpoints %}covered{% endif %}">
-                    {% if (endpoint.method, endpoint.path) in covered_endpoints %}покрыт{% else %}не покрыт{% endif %}
+                <div class="status {% if endpoint in covered_endpoints %}covered{% endif %}">
+                    {% if endpoint in covered_endpoints %}покрыт{% else %}не покрыт{% endif %}
                 </div>
             </div>
             {% endfor %}

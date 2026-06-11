@@ -14,15 +14,18 @@ task test            # dead-fixtures check, then pytest with allure + cov
 
 ## Architecture
 
-- `src/main.py` — FastAPI app entrypoint. Proxies requests through `/proxy` mount using `fastapi-proxy-lib`. A middleware intercepts all requests and marks matching endpoints as covered.
-- `src/core/coverage.py` — `CoverageService` dataclass: loads spec, tracks covered endpoints, computes coverage %.
-- `src/core/loader.py` — Fetches the Swagger JSON via httpx.
-- `src/core/parser.py` — Flattens `paths` into `{method, path}` lists; groups by tag.
-- `src/core/utils.py` — `swagger_path_to_regex` converts `{param}` to named regex groups; `match_endpoint` handles `/proxy` prefix stripping and query param removal.
+- `src/main.py` — FastAPI app entrypoint, lifespan wiring, middleware, inline reverse-proxy route over httpx.
+- `src/models.py` — `Endpoint`, `ParsedSpec`, `CoverageState` dataclasses.
+- `src/core/loader.py` — Fetches the Swagger JSON via async httpx.
+- `src/core/parser.py` — Parses spec into `ParsedSpec` (typed endpoints + tag groups).
+- `src/core/matcher.py` — `EndpointMatcher` with `@lru_cache`-ed regex compilation.
+- `src/services/coverage.py` — `CoverageService` with DI: receives loader, parser, matcher. No global state.
+- `src/routers/setup.py` — `POST /set_urls`.
+- `src/routers/report.py` — `GET /`, `POST /clear_coverage`, `POST /refresh_spec`.
 
 ## Testing quirks
 
-- Tests import from `src.core.*` directly (no conftest fixtures for db/network).
+- Tests import from `src.*` directly (no conftest fixtures for db/network).
 - Test runner: `task test` runs dead-fixtures check first, then `pytest --exitfirst --alluredir=allure-results --cov --cov-report=xml:cov.xml --cov-report=term-missing:skip-covered`.
 - `pytest-deadfixtures` is a dev dependency — unused fixtures fail CI.
 - Allure reports go to `allure-results/` (gitignored).
