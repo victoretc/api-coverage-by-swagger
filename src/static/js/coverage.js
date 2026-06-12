@@ -95,6 +95,15 @@ async function refreshCoverage() {
     }
 }
 
+function pluralize(n, words) {
+    n = Math.abs(n) % 100;
+    var n1 = n % 10;
+    if (n > 10 && n < 20) return words[2];
+    if (n1 > 1 && n1 < 5) return words[1];
+    if (n1 === 1) return words[0];
+    return words[2];
+}
+
 function statusClass(code) {
     if (code < 300) return 'ok';
     if (code < 400) return 'redirect';
@@ -102,27 +111,29 @@ function statusClass(code) {
 }
 
 function renderRecord(rec) {
-    var previewHtml = '';
+    var detailHtml = '';
     if (rec.request_preview) {
-        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Request:</span><span class="history-detail-value">' + escapeHtml(rec.request_preview) + '</span></div>';
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Request</span><span class="history-detail-value">' + escapeHtml(rec.request_preview) + '</span></div>';
     }
     if (rec.response_preview) {
-        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Response:</span><span class="history-detail-value">' + escapeHtml(rec.response_preview) + '</span></div>';
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Response</span><span class="history-detail-value">' + escapeHtml(rec.response_preview) + '</span></div>';
     }
     if (rec.query_params) {
-        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Params:</span><span class="history-detail-value">' + escapeHtml(rec.query_params) + '</span></div>';
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Params</span><span class="history-detail-value">' + escapeHtml(rec.query_params) + '</span></div>';
     }
     if (rec.content_type) {
-        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Content-Type:</span><span class="history-detail-value">' + escapeHtml(rec.content_type) + '</span></div>';
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Content-Type</span><span class="history-detail-value">' + escapeHtml(rec.content_type) + '</span></div>';
     }
 
     return '<div class="history-record">'
-        + '<div class="history-record-header">'
+        + '<div class="history-record-top">'
         + '<span class="history-status ' + statusClass(rec.status_code) + '">' + rec.status_code + '</span>'
+        + '<div class="history-meta">'
         + '<span class="history-timestamp">' + rec.timestamp + '</span>'
         + '<span class="history-duration">' + rec.duration_ms + ' ms</span>'
         + '</div>'
-        + previewHtml
+        + '</div>'
+        + detailHtml
         + '</div>';
 }
 
@@ -139,7 +150,7 @@ function showEndpointHistory(method, path) {
     var body = document.getElementById('modal-body');
 
     title.textContent = method + ' ' + path;
-    body.innerHTML = '<div class="text-center text-white py-4">Загрузка...</div>';
+    body.innerHTML = '<div class="text-center" style="color:#888;padding:30px 0;">Загрузка...</div>';
     modal.style.display = 'flex';
 
     var params = new URLSearchParams({ method: method, path: path });
@@ -150,7 +161,8 @@ function showEndpointHistory(method, path) {
                 body.innerHTML = '<div class="history-empty">Запросов по этому эндпоинту не было</div>';
                 return;
             }
-            var html = '<div style="margin-bottom:12px;"><span class="history-count-badge">' + data.length + ' запросов</span></div>';
+            var word = pluralize(data.length, ['запрос', 'запроса', 'запросов']);
+            var html = '<div class="history-count-line"><span class="history-count-badge">' + data.length + ' ' + word + '</span></div>';
             data.forEach(function (rec) {
                 html += renderRecord(rec);
             });
