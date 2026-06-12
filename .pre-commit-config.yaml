@@ -46,3 +46,12 @@ repos:
   - repo: meta
     hooks:
       - id: check-useless-excludes
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest src/tests --exitfirst
+        language: system
+        types: [python]
+        pass_filenames: false
