@@ -1,3 +1,4 @@
+import time
 from contextlib import asynccontextmanager
 
 import httpx
@@ -38,6 +39,7 @@ async def proxy(request: Request, path: str):
     if not base:
         raise HTTPException(status_code=400, detail="Base URL не настроен")
 
+    start = time.monotonic()
     body = await request.body()
     headers = {
         k: v
@@ -53,6 +55,27 @@ async def proxy(request: Request, path: str):
             content=body,
             params=request.query_params,
         )
+
+    duration_ms = round((time.monotonic() - start) * 1000, 1)
+
+    svc = request.app.state.coverage_service
+    MAX_PREVIEW = 500
+    svc.record_request(
+        method=request.method,
+        path=f"/proxy/{path}",
+        status_code=resp.status_code,
+        duration_ms=duration_ms,
+        query_params=str(request.query_params) if request.query_params else None,
+        content_type=resp.headers.get("content-type"),
+        request_preview=(
+            body[:MAX_PREVIEW].decode("utf-8", errors="replace") if body else None
+        ),
+        response_preview=(
+            resp.content[:MAX_PREVIEW].decode("utf-8", errors="replace")
+            if resp.content
+            else None
+        ),
+    )
 
     return Response(
         content=resp.content,

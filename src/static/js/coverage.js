@@ -94,3 +94,85 @@ async function refreshCoverage() {
         showNotification('Ошибка сети: ' + error.message);
     }
 }
+
+function statusClass(code) {
+    if (code < 300) return 'ok';
+    if (code < 400) return 'redirect';
+    return 'error';
+}
+
+function renderRecord(rec) {
+    var previewHtml = '';
+    if (rec.request_preview) {
+        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Request:</span><span class="history-detail-value">' + escapeHtml(rec.request_preview) + '</span></div>';
+    }
+    if (rec.response_preview) {
+        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Response:</span><span class="history-detail-value">' + escapeHtml(rec.response_preview) + '</span></div>';
+    }
+    if (rec.query_params) {
+        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Params:</span><span class="history-detail-value">' + escapeHtml(rec.query_params) + '</span></div>';
+    }
+    if (rec.content_type) {
+        previewHtml += '<div class="history-detail-row"><span class="history-detail-label">Content-Type:</span><span class="history-detail-value">' + escapeHtml(rec.content_type) + '</span></div>';
+    }
+
+    return '<div class="history-record">'
+        + '<div class="history-record-header">'
+        + '<span class="history-status ' + statusClass(rec.status_code) + '">' + rec.status_code + '</span>'
+        + '<span class="history-timestamp">' + rec.timestamp + '</span>'
+        + '<span class="history-duration">' + rec.duration_ms + ' ms</span>'
+        + '</div>'
+        + previewHtml
+        + '</div>';
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+function showEndpointHistory(method, path) {
+    var modal = document.getElementById('history-modal');
+    var title = document.getElementById('modal-title');
+    var body = document.getElementById('modal-body');
+
+    title.textContent = method + ' ' + path;
+    body.innerHTML = '<div class="text-center text-white py-4">Загрузка...</div>';
+    modal.style.display = 'flex';
+
+    var params = new URLSearchParams({ method: method, path: path });
+    fetch('/endpoint_history?' + params.toString())
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (!data || data.length === 0) {
+                body.innerHTML = '<div class="history-empty">Запросов по этому эндпоинту не было</div>';
+                return;
+            }
+            var html = '<div style="margin-bottom:12px;"><span class="history-count-badge">' + data.length + ' запросов</span></div>';
+            data.forEach(function (rec) {
+                html += renderRecord(rec);
+            });
+            body.innerHTML = html;
+        })
+        .catch(function (err) {
+            body.innerHTML = '<div class="history-empty">Ошибка загрузки: ' + escapeHtml(err.message) + '</div>';
+        });
+}
+
+function closeHistoryModal(e) {
+    if (e && e.target !== document.getElementById('history-modal')) return;
+    document.getElementById('history-modal').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('endpoints-container').addEventListener('click', function (e) {
+        var endpoint = e.target.closest('.endpoint');
+        if (endpoint) {
+            var method = endpoint.getAttribute('data-method');
+            var path = endpoint.getAttribute('data-path');
+            showEndpointHistory(method, path);
+        }
+    });
+});

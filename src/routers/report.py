@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
@@ -68,3 +68,31 @@ async def refresh_spec(request: Request):
         )
 
     return {"message": "Спецификация успешно обновлена"}
+
+
+@router.get("/endpoint_history")
+async def endpoint_history(
+    request: Request,
+    method: str = Query(),
+    path: str = Query(),
+):
+    svc = request.app.state.coverage_service
+    if not svc.is_initialized:
+        raise HTTPException(status_code=400, detail="Спецификация не загружена")
+    records = svc.get_history(method, path)
+    return JSONResponse(
+        content=[
+            {
+                "method": r.method,
+                "path": r.path,
+                "status_code": r.status_code,
+                "timestamp": r.timestamp,
+                "duration_ms": r.duration_ms,
+                "query_params": r.query_params,
+                "content_type": r.content_type,
+                "request_preview": r.request_preview,
+                "response_preview": r.response_preview,
+            }
+            for r in records
+        ]
+    )
