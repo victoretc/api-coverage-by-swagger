@@ -30,6 +30,11 @@ app.include_router(setup.router)
 app.include_router(report.router)
 
 
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
 @app.api_route(
     "/proxy/{path:path}",
     methods=["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
