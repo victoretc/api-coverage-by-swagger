@@ -12,6 +12,7 @@ fastapi = {extras = ["standart"], version = "^0.115.8"}
 uvicorn = "^0.34.0"
 jinja2 = "^3.1.5"
 httpx = "^0.28.1"
+prance = {extras = ["osv"], version = "^25.4.8.0"}
 
 
 [tool.poetry.group.dev.dependencies]

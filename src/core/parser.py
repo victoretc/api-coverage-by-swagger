@@ -1,11 +1,19 @@
+from prance.util.resolver import RefResolver
+
 from models import Endpoint, ParsedSpec
 
 
 def parse_spec(spec: dict) -> ParsedSpec:
+    resolver = RefResolver(specs=spec, url="file:///spec.yaml")
+    resolver.resolve_references()
+    resolved = resolver.specs
+
     endpoints: set[Endpoint] = set()
     by_tag: dict[str, list[Endpoint]] = {}
 
-    for path, methods in spec.get("paths", {}).items():
+    for path, methods in resolved.get("paths", {}).items():
+        if not isinstance(methods, dict):
+            continue
         for method, details in methods.items():
             if not isinstance(details, dict):
                 continue
