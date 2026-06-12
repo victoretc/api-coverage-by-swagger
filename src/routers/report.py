@@ -10,9 +10,12 @@ templates = Jinja2Templates(directory="templates")
 async def get_report(request: Request):
     svc = request.app.state.coverage_service
     if not svc.is_initialized:
-        return templates.TemplateResponse("url_form.html", {"request": request})
+        return templates.TemplateResponse(
+            request, "url_form.html", {"request": request}
+        )
 
     return templates.TemplateResponse(
+        request,
         "coverage.html",
         {
             "request": request,
@@ -33,6 +36,7 @@ async def export_report(request: Request):
         raise HTTPException(status_code=400, detail="Спецификация не загружена")
 
     return templates.TemplateResponse(
+        request,
         "report_export.html",
         {
             "request": request,

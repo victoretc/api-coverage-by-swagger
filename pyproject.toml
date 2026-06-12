@@ -21,6 +21,8 @@ pytest-cov = "^6.2.1"
 pytest-deadfixtures = "^2.2.1"
 allure-pytest = "^2.14.3"
 faker = "^37.4.0"
+pytest-asyncio = "^1.4.0"
+ruff = "^0.15.17"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

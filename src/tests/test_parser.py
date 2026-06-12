@@ -108,41 +108,63 @@ expected_endpoints = frozenset(
 class TestParseSpec:
     def test_all_endpoints(self, spec):
         result = parse_spec(spec)
-        assert len(result.all_endpoints) == len(expected_endpoints)
-        for ep in expected_endpoints:
-            assert ep in result.all_endpoints
+        assert result.all_endpoints == expected_endpoints
 
-    def test_by_tag(self, spec):
+    def test_by_tag_keys(self, spec):
         result = parse_spec(spec)
-
         assert set(result.by_tag) == {"pet", "store", "user", "default"}
 
-        assert len(result.by_tag["pet"]) == 4
-        for ep in (
-            Endpoint(method="POST", path="/pet/{petId}/uploadImage", tags=("pet",)),
-            Endpoint(method="POST", path="/pet", tags=("pet",)),
-            Endpoint(method="PUT", path="/pet", tags=("pet",)),
-            Endpoint(method="GET", path="/pet/findByStatus", tags=("pet",)),
-        ):
-            assert ep in result.by_tag["pet"]
-
-        assert len(result.by_tag["store"]) == 1
-        assert (
-            Endpoint(method="GET", path="/store/inventory", tags=("store",))
-            in result.by_tag["store"]
-        )
-
-        assert len(result.by_tag["user"]) == 1
-        assert (
-            Endpoint(method="GET", path="/user/{username}", tags=("user",))
-            in result.by_tag["user"]
-        )
-
-        assert len(result.by_tag["default"]) == 1
-        assert (
-            Endpoint(method="GET", path="/untagged/endpoint", tags=("default",))
-            in result.by_tag["default"]
-        )
+    @pytest.mark.parametrize(
+        "tag,expected",
+        [
+            (
+                "pet",
+                frozenset(
+                    [
+                        Endpoint(
+                            method="POST",
+                            path="/pet/{petId}/uploadImage",
+                            tags=("pet",),
+                        ),
+                        Endpoint(method="POST", path="/pet", tags=("pet",)),
+                        Endpoint(method="PUT", path="/pet", tags=("pet",)),
+                        Endpoint(method="GET", path="/pet/findByStatus", tags=("pet",)),
+                    ]
+                ),
+            ),
+            (
+                "store",
+                frozenset(
+                    [
+                        Endpoint(
+                            method="GET", path="/store/inventory", tags=("store",)
+                        ),
+                    ]
+                ),
+            ),
+            (
+                "user",
+                frozenset(
+                    [
+                        Endpoint(method="GET", path="/user/{username}", tags=("user",)),
+                    ]
+                ),
+            ),
+            (
+                "default",
+                frozenset(
+                    [
+                        Endpoint(
+                            method="GET", path="/untagged/endpoint", tags=("default",)
+                        ),
+                    ]
+                ),
+            ),
+        ],
+    )
+    def test_by_tag(self, spec, tag, expected):
+        result = parse_spec(spec)
+        assert frozenset(result.by_tag[tag]) == expected
 
 
 def test_swagger_empty_paths():
