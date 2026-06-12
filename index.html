@@ -26,6 +26,7 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 2rem;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -129,17 +130,21 @@ body {
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    align-items: stretch;
 }
 
 .mobile-header nav::-webkit-scrollbar { display: none; }
 
 .mobile-header a {
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
     color: #999;
     font-size: 0.82rem;
     font-weight: 600;
-    padding: 8px 18px;
+    padding: 10px 18px;
+    min-height: 44px;
     border-radius: 100px;
     background-color: var(--card-bg);
     white-space: nowrap;
@@ -659,37 +664,105 @@ body {
         padding-left: 16px;
         padding-right: 16px;
     }
+    .report-demo .endpoint { grid-template-columns: 80px 1fr 80px; }
 }
 
 @media (max-width: 576px) {
-    .hero { padding: 48px 24px 60px; }
-    .hero h1 { font-size: 1.5rem; }
+    .hero { padding: 40px 20px 56px; }
+    .hero h1 { font-size: clamp(1.3rem, 6vw, 1.5rem); }
     .hero p { font-size: 0.9rem; }
-    .hero-wave { height: 35px; }
-    .constrained { padding-left: 24px; padding-right: 24px; }
-    .how-section { padding: 48px 0 40px; }
-    .report-section { padding: 40px 0 0; }
-    .step { padding: 18px 20px; }
-    .form-block { padding: 20px; }
+    .hero-wave { height: 30px; }
+    .constrained { padding-left: 20px; padding-right: 20px; }
+    .how-section { padding: 40px 0 36px; }
+    .report-section { padding: 36px 0 0; }
+    .step { padding: 16px 18px; gap: 14px; }
+    .step-text { font-size: 0.9rem; }
+    .form-block { padding: 18px; border-radius: 12px; }
     .form-block .form-control { font-size: 0.82rem; padding: 10px 14px; }
-    .form-block .btn-save { padding: 8px 24px; font-size: 0.82rem; }
+    .form-block .btn-save { padding: 10px 24px; font-size: 0.82rem; min-height: 44px; }
     .report-section .section-label {
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .report-demo .container-md {
-        padding-left: 8px;
-        padding-right: 8px;
+        padding-left: 6px;
+        padding-right: 6px;
     }
-    .report-demo .text-block .large-text { font-size: 48px; }
-    .report-demo .text-block .small-text { font-size: 14px; }
-    .report-demo .endpoint { grid-template-columns: 1fr; text-align: center; }
-    .report-demo .endpoint .path { white-space: nowrap; }
+    .report-demo .bg-secondary.rounded-5.p-4 { padding: 1rem !important; }
+    .report-demo .text-block { padding: 14px 10px !important; }
+    .report-demo .text-block .large-text { font-size: clamp(32px, 12vw, 48px); }
+    .report-demo .text-block .small-text { font-size: 13px; }
+    .report-demo .endpoint {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 6px;
+        padding: 12px 14px;
+        margin: 8px 0;
+    }
+    .report-demo .endpoint .method,
+    .report-demo .endpoint .status {
+        display: inline-block;
+        width: auto;
+        min-width: 80px;
+        font-size: 0.8rem;
+        padding: 5px 14px;
+    }
+    .report-demo .endpoint .path {
+        white-space: normal;
+        word-break: break-all;
+        font-size: 0.82rem;
+        overflow-x: visible;
+    }
+    .report-demo .btn-filter {
+        padding: 10px 18px;
+        font-size: 0.82rem;
+        min-height: 44px;
+    }
+    .report-demo .row-cols-md-3 > .col {
+        padding: 4px;
+    }
+    .report-demo .row-cols-md-3 {
+        margin: -4px;
+    }
+    .gh-link {
+        padding: 8px 18px;
+        font-size: 0.85rem;
+    }
+    .mobile-header { padding: 10px 12px; }
+    .mobile-header a {
+        font-size: 0.78rem;
+        padding: 9px 14px;
+        min-height: 40px;
+    }
 }
 
-@media (max-width: 400px) {
-    .report-demo .text-block .large-text { font-size: 36px; }
-    .report-demo .text-block .small-text { font-size: 13px; }
+@media (max-width: 420px) {
+    .hero { padding: 32px 16px 48px; }
+    .hero h1 { font-size: clamp(1.15rem, 5.5vw, 1.3rem); }
+    .constrained { padding-left: 16px; padding-right: 16px; }
+    .report-demo .container-md { padding-left: 4px; padding-right: 4px; }
+    .report-demo .text-block .large-text { font-size: clamp(26px, 10vw, 32px); }
+    .report-demo .text-block .medium-text { font-size: 18px; }
+    .report-demo .endpoint { padding: 10px 10px; }
+    .step { padding: 14px 14px; }
+    .step-text { font-size: 0.85rem; }
+    .form-block { padding: 14px; }
+    .report-section .section-label {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .report-demo .bg-secondary.rounded-5.p-4 { padding: 0.75rem !important; }
+    .section-label { font-size: 0.7rem; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .step:hover {
+        transform: none;
+        box-shadow: var(--shadow);
+    }
+    .gh-link:hover {
+        transform: none;
+    }
 }
 </style>
 </head>
@@ -828,13 +901,13 @@ body {
                                 </div>
                             </div>
 
-                            <div class="row rounded-5 mt-4 text-white bg-card p-3" style="gap: 0.5rem;">
-                                <button class="col-auto btn-filter" onclick="filterEndpoints('all')">Все эндпоинты</button>
-                                <button class="col-auto btn-filter" onclick="filterEndpoints('covered')">Покрытые</button>
+                            <div class="d-flex flex-wrap rounded-5 mt-4 text-white bg-card p-3" style="gap: 0.5rem;">
+                                <button class="btn-filter" onclick="filterEndpoints('all')">Все эндпоинты</button>
+                                <button class="btn-filter" onclick="filterEndpoints('covered')">Покрытые</button>
                             </div>
 
-                            <div class="row rounded-5 mt-2 text-white bg-card p-3 d-flex flex-wrap" style="gap: 0.75rem;">
-                                <button class="col-auto btn-filter" onclick="filterEndpoints('todos')">todos</button>
+                            <div class="d-flex flex-wrap rounded-5 mt-2 text-white bg-card p-3" style="gap: 0.75rem;">
+                                <button class="btn-filter" onclick="filterEndpoints('todos')">todos</button>
                             </div>
 
                             <div id="endpoints-container" class="mt-4 mb-4">
