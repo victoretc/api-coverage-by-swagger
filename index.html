@@ -77,7 +77,6 @@ body {
     font-size: 0.85rem;
     padding: 8px 14px;
     border-radius: 8px;
-    transition: color 0.2s, background-color 0.2s;
 }
 
 .sidebar a .num {
@@ -91,16 +90,6 @@ body {
     font-weight: 700;
     background-color: transparent;
     color: #bbb;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.sidebar a:hover {
-    color: var(--primary-color);
-    background-color: var(--card-bg);
-}
-
-.sidebar a:hover .num {
-    color: var(--primary-color);
 }
 
 .sidebar a.active {
@@ -150,10 +139,8 @@ body {
     border-radius: 100px;
     background-color: var(--card-bg);
     white-space: nowrap;
-    transition: background-color 0.2s, color 0.2s;
 }
 
-.mobile-header a:hover,
 .mobile-header a.active {
     color: #fff;
     background-color: var(--primary-color);
@@ -240,12 +227,7 @@ body {
     padding: 3px 16px 3px 14px;
     border-radius: 100px;
     background-color: rgba(255,255,255,0.14);
-    transition: background-color 0.2s, transform 0.2s;
     white-space: nowrap;
-}
-
-.hero-link:hover {
-    background-color: rgba(255,255,255,0.24);
 }
 
 .hero-link i {
@@ -301,12 +283,6 @@ body {
     border-radius: 14px;
     box-shadow: var(--shadow);
     border: 1px solid rgba(0,0,0,0.04);
-    transition: box-shadow 0.25s, transform 0.25s;
-}
-
-.step:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.08);
-    transform: translateY(-1px);
 }
 
 
@@ -428,16 +404,21 @@ body {
 .report-demo .btn-filter {
     border: none;
     cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 100px;
     color: white;
     background-color: var(--secondary-color);
-    transition: background-color 0.2s;
 }
 
 .report-demo .btn-filter:hover {
     background-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.report-demo .btn-filter:active {
+    transform: scale(0.95);
 }
 
 .report-demo .endpoint {
@@ -499,12 +480,6 @@ body {
     border-radius: 100px;
     background-color: var(--card-bg);
     font-size: 0.9rem;
-    transition: background-color 0.2s, transform 0.2s;
-}
-
-.gh-link:hover {
-    background-color: #e0e4f0;
-    transform: translateX(2px);
 }
 
 .gh-link i {
@@ -519,11 +494,6 @@ body {
     font-weight: 700;
     text-decoration: none;
     font-size: 0.95rem;
-    transition: opacity 0.2s;
-}
-
-.gh-link-sm:hover {
-    opacity: 0.7;
 }
 
 .gh-link-sm i {
@@ -757,15 +727,6 @@ body {
     .section-label { font-size: 0.7rem; }
 }
 
-@media (hover: none) and (pointer: coarse) {
-    .step:hover {
-        transform: none;
-        box-shadow: var(--shadow);
-    }
-    .gh-link:hover {
-        transform: none;
-    }
-}
 </style>
 </head>
 <body>
