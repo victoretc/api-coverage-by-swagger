@@ -37,6 +37,7 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
 /* ── Layout ── */
@@ -126,11 +127,12 @@ body {
 
 .mobile-header nav {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     align-items: stretch;
+    justify-content: center;
 }
 
 .mobile-header nav::-webkit-scrollbar { display: none; }
@@ -685,8 +687,8 @@ body {
         padding-right: 20px;
     }
     .report-demo .container-md {
-        padding-left: 6px;
-        padding-right: 6px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
     .report-demo .bg-secondary.rounded-5.p-4 { padding: 1rem !important; }
     .report-demo .text-block { padding: 14px 10px !important; }
@@ -740,7 +742,7 @@ body {
     .hero { padding: 32px 16px 48px; }
     .hero h1 { font-size: clamp(1.15rem, 5.5vw, 1.3rem); }
     .constrained { padding-left: 16px; padding-right: 16px; }
-    .report-demo .container-md { padding-left: 4px; padding-right: 4px; }
+    .report-demo .container-md { padding-left: 12px; padding-right: 12px; }
     .report-demo .text-block .large-text { font-size: clamp(26px, 10vw, 32px); }
     .report-demo .text-block .medium-text { font-size: 18px; }
     .report-demo .endpoint { padding: 10px 10px; }
