@@ -1,11 +1,16 @@
 FROM python:3.12-slim AS builder
 
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    POETRY_VERSION=1.8.5 \
-    POETRY_VIRTUALENVS_CREATE=false
+    PYTHONDONTWRITEBYTECODE=1
 
-RUN pip install --no-cache-dir "poetry==$POETRY_VERSION"
+ARG POETRY_VERSION=1.8.5
+
+RUN python -m venv /venv && \
+    /venv/bin/pip install --no-cache-dir "poetry==$POETRY_VERSION"
+
+ENV PATH="/venv/bin:$PATH" \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_CACHE_DIR=/tmp/poetry-cache
 
 WORKDIR /app
 
@@ -13,24 +18,22 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --only main
 
 COPY src/ /app/src/
-
-RUN poetry install --only main
+RUN poetry install --only main && rm -rf /tmp/poetry-cache
 
 FROM builder AS development
 
 RUN poetry install --no-root
-
 COPY tests/ /app/tests/
 
-FROM python:3.12-slim
+FROM python:3.12-slim AS production
 
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
+    PYTHONDONTWRITEBYTECODE=1 \
+    PATH="/venv/bin:$PATH"
 
 RUN groupadd -r app && useradd -r -g app -d /app -s /sbin/nologin app
 
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /venv /venv
 COPY --from=builder /app /app
 
 WORKDIR /app/src
