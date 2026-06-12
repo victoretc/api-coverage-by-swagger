@@ -20,8 +20,8 @@ tasks:
 
   test:
     cmds:
-      - poetry run pytest tests --dead-fixtures
-      - poetry run pytest tests --exitfirst --alluredir=allure-results --cov --cov-report=xml:cov.xml --cov-report=term-missing:skip-covered
+      - poetry run pytest src/tests --dead-fixtures
+      - poetry run pytest src/tests --exitfirst --alluredir=allure-results --cov --cov-report=xml:cov.xml --cov-report=term-missing:skip-covered
 
 
   run:

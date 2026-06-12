@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.env
+.venv/
+.pytest_cache/
+.ruff_cache/
+allure-results/
+cov.xml
+.coverage
+.coverage.*
+.playwright-mcp/
+.readme/
+AGENTS.md
+node_modules/

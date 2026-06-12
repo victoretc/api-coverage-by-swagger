@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+    image: proxy-coverage:latest
+    container_name: proxy-coverage
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  tests:
+    profiles:
+      - tests
+    build:
+      context: .
+      target: development
+    image: proxy-coverage:dev
+    container_name: proxy-coverage-tests
+    depends_on:
+      - app
+    environment:
+      APP_URL: http://app:8000
+    command: pytest tests/ --exitfirst -v
