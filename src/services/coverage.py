@@ -110,6 +110,26 @@ class CoverageService:
         key = f"{method} {path}"
         return list(self._history.get(key, []))
 
+    @property
+    def history_data(self) -> dict[str, list[dict]]:
+        result = {}
+        for key, records in self._history.items():
+            result[key] = [
+                {
+                    "method": r.method,
+                    "path": r.path,
+                    "status_code": r.status_code,
+                    "timestamp": r.timestamp,
+                    "duration_ms": r.duration_ms,
+                    "query_params": r.query_params,
+                    "content_type": r.content_type,
+                    "request_preview": r.request_preview,
+                    "response_preview": r.response_preview,
+                }
+                for r in records
+            ]
+        return result
+
     def clear(self) -> None:
         self._covered.clear()
         self._history.clear()

@@ -285,8 +285,6 @@ body {
     border: 1px solid rgba(0,0,0,0.04);
 }
 
-
-
 .step-num {
     display: inline-flex;
     align-items: center;
@@ -330,7 +328,6 @@ body {
 
 .report-demo {
     margin-top: 32px;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .report-demo .container-md {
@@ -432,6 +429,13 @@ body {
     border-radius: 10px;
     background-color: var(--card-bg);
     box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.report-demo .endpoint:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .report-demo .endpoint .method,
@@ -467,6 +471,174 @@ body {
 
 .report-demo .endpoint .status.covered {
     background-color: var(--success-color);
+}
+
+/* ── Modal ── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadein 0.2s ease;
+}
+
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 720px;
+    width: 90%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: scalein 0.2s ease;
+}
+
+@keyframes scalein { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-header .medium-text {
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    transition: opacity 0.2s;
+}
+
+.modal-close:hover { opacity: 0.7; }
+
+.modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.history-record {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.history-record:last-child { margin-bottom: 0; }
+
+.history-record-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.history-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.history-status.ok { background: linear-gradient(135deg, #7dcd75, var(--success-color)); }
+.history-status.redirect { background: linear-gradient(135deg, #6a85d1, var(--secondary-color)); }
+.history-status.error { background: linear-gradient(135deg, #cc6063, var(--danger-color)); }
+
+.history-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.history-timestamp {
+    color: #777;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.history-duration {
+    font-size: 13px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.history-detail-row {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    margin-top: 8px;
+    color: #555;
+}
+
+.history-detail-label {
+    font-weight: 700;
+    color: var(--primary-color);
+    min-width: 100px;
+    flex-shrink: 0;
+    padding-top: 6px;
+}
+
+.history-detail-value {
+    flex: 1;
+    word-break: break-all;
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    background: var(--card-bg);
+    padding: 6px 12px;
+    border-radius: 8px;
+    max-height: 120px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+.history-empty {
+    color: #888;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 15px;
+}
+
+.history-count-line { margin-bottom: 16px; }
+
+.history-count-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-color), #3a5aa8);
+    color: white;
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(79, 109, 194, 0.3);
 }
 
 /* ── GitHub link ── */
@@ -832,13 +1004,13 @@ body {
                                     </div>
                                     <div class="col">
                                         <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
-                                            <span class="large-text d-block">23</span>
+                                            <span class="large-text d-block">17</span>
                                             <span class="small-text">покрыто</span>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="bg-primary rounded-5 text-block text-white p-3 text-center">
-                                            <span class="large-text d-block">100.0</span>
+                                            <span class="large-text d-block">73.9</span>
                                             <span class="small-text">процент покрытия</span>
                                         </div>
                                     </div>
@@ -847,7 +1019,7 @@ body {
                                 <div class="row">
                                     <div class="col">
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 100.0%;" aria-valuenow="100.0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar" role="progressbar" style="width: 73.9%;" aria-valuenow="73.9" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -859,15 +1031,10 @@ body {
                             </div>
 
                             <div class="row rounded-5 mt-2 card-bg text-white bg-card p-3 d-flex flex-wrap" style="gap: 0.75rem;">
-
-                                    <button class="col-auto btn-filter" onclick="filterEndpoints('auth')">auth</button>
-
-                                    <button class="col-auto btn-filter" onclick="filterEndpoints('clubs')">clubs</button>
-
-                                    <button class="col-auto btn-filter" onclick="filterEndpoints('docs')">docs</button>
-
-                                    <button class="col-auto btn-filter" onclick="filterEndpoints('users')">users</button>
-
+                                <button class="col-auto btn-filter" onclick="filterEndpoints('auth')">auth</button>
+                                <button class="col-auto btn-filter" onclick="filterEndpoints('clubs')">clubs</button>
+                                <button class="col-auto btn-filter" onclick="filterEndpoints('docs')">docs</button>
+                                <button class="col-auto btn-filter" onclick="filterEndpoints('users')">users</button>
                             </div>
 
                             <div id="endpoints-container" class="mt-4 mb-4">
@@ -877,28 +1044,22 @@ body {
                                         <span class="medium-text">auth</span>
                                     </div>
 
-                                    <div class="endpoint" data-tag="auth" data-covered="true">
+                                    <div class="endpoint" data-tag="auth" data-covered="true" data-method="POST" data-path="/api/v1/auth/logout/">
                                         <div class="method">POST</div>
                                         <div class="path">/api/v1/auth/logout/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="auth" data-covered="true">
+                                    <div class="endpoint" data-tag="auth" data-covered="true" data-method="POST" data-path="/api/v1/auth/token/">
                                         <div class="method">POST</div>
                                         <div class="path">/api/v1/auth/token/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="auth" data-covered="true">
+                                    <div class="endpoint" data-tag="auth" data-covered="true" data-method="POST" data-path="/api/v1/auth/token/refresh/">
                                         <div class="method">POST</div>
                                         <div class="path">/api/v1/auth/token/refresh/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
                                 </div>
@@ -908,116 +1069,88 @@ body {
                                         <span class="medium-text">clubs</span>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="GET" data-path="/api/v1/clubs/">
                                         <div class="method">GET</div>
                                         <div class="path">/api/v1/clubs/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="POST" data-path="/api/v1/clubs/">
                                         <div class="method">POST</div>
                                         <div class="path">/api/v1/clubs/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="GET" data-path="/api/v1/clubs/{id}/">
                                         <div class="method">GET</div>
                                         <div class="path">/api/v1/clubs/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="PUT" data-path="/api/v1/clubs/{id}/">
                                         <div class="method">PUT</div>
                                         <div class="path">/api/v1/clubs/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="PATCH" data-path="/api/v1/clubs/{id}/">
                                         <div class="method">PATCH</div>
                                         <div class="path">/api/v1/clubs/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="DELETE" data-path="/api/v1/clubs/{id}/">
                                         <div class="method">DELETE</div>
                                         <div class="path">/api/v1/clubs/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="POST" data-path="/api/v1/clubs/{id}/members/me/">
                                         <div class="method">POST</div>
                                         <div class="path">/api/v1/clubs/{id}/members/me/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="true" data-method="DELETE" data-path="/api/v1/clubs/{id}/members/me/">
                                         <div class="method">DELETE</div>
                                         <div class="path">/api/v1/clubs/{id}/members/me/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="false" data-method="GET" data-path="/api/v1/clubs/reviews/">
                                         <div class="method">GET</div>
                                         <div class="path">/api/v1/clubs/reviews/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status">не покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="false" data-method="POST" data-path="/api/v1/clubs/reviews/">
                                         <div class="method">POST</div>
                                         <div class="path">/api/v1/clubs/reviews/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status">не покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="false" data-method="GET" data-path="/api/v1/clubs/reviews/{id}/">
                                         <div class="method">GET</div>
                                         <div class="path">/api/v1/clubs/reviews/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status">не покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="false" data-method="PUT" data-path="/api/v1/clubs/reviews/{id}/">
                                         <div class="method">PUT</div>
                                         <div class="path">/api/v1/clubs/reviews/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status">не покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="false" data-method="PATCH" data-path="/api/v1/clubs/reviews/{id}/">
                                         <div class="method">PATCH</div>
                                         <div class="path">/api/v1/clubs/reviews/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status">не покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="clubs" data-covered="true">
+                                    <div class="endpoint" data-tag="clubs" data-covered="false" data-method="DELETE" data-path="/api/v1/clubs/reviews/{id}/">
                                         <div class="method">DELETE</div>
                                         <div class="path">/api/v1/clubs/reviews/{id}/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status">не покрыт</div>
                                     </div>
 
                                 </div>
@@ -1027,12 +1160,10 @@ body {
                                         <span class="medium-text">docs</span>
                                     </div>
 
-                                    <div class="endpoint" data-tag="docs" data-covered="true">
+                                    <div class="endpoint" data-tag="docs" data-covered="true" data-method="GET" data-path="/api/v1/docs/schema/">
                                         <div class="method">GET</div>
                                         <div class="path">/api/v1/docs/schema/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
                                 </div>
@@ -1042,44 +1173,34 @@ body {
                                         <span class="medium-text">users</span>
                                     </div>
 
-                                    <div class="endpoint" data-tag="users" data-covered="true">
+                                    <div class="endpoint" data-tag="users" data-covered="true" data-method="GET" data-path="/api/v1/users/me/">
                                         <div class="method">GET</div>
                                         <div class="path">/api/v1/users/me/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="users" data-covered="true">
+                                    <div class="endpoint" data-tag="users" data-covered="true" data-method="PUT" data-path="/api/v1/users/me/">
                                         <div class="method">PUT</div>
                                         <div class="path">/api/v1/users/me/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="users" data-covered="true">
+                                    <div class="endpoint" data-tag="users" data-covered="true" data-method="PATCH" data-path="/api/v1/users/me/">
                                         <div class="method">PATCH</div>
                                         <div class="path">/api/v1/users/me/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="users" data-covered="true">
+                                    <div class="endpoint" data-tag="users" data-covered="true" data-method="DELETE" data-path="/api/v1/users/me/">
                                         <div class="method">DELETE</div>
                                         <div class="path">/api/v1/users/me/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status covered">покрыт</div>
                                     </div>
 
-                                    <div class="endpoint" data-tag="users" data-covered="true">
+                                    <div class="endpoint" data-tag="users" data-covered="false" data-method="POST" data-path="/api/v1/users/register/">
                                         <div class="method">POST</div>
                                         <div class="path">/api/v1/users/register/</div>
-                                        <div class="status covered">
-                                            покрыт
-                                        </div>
+                                        <div class="status">не покрыт</div>
                                     </div>
 
                                 </div>
@@ -1093,6 +1214,19 @@ body {
                     </div>
                 </div>
             </div>
+
+            <!-- ── History Modal ── -->
+            <div id="history-modal" class="modal-overlay" style="display: none;" onclick="closeHistoryModal(event)">
+                <div class="modal-content" onclick="event.stopPropagation()">
+                    <div class="modal-header">
+                        <span class="medium-text" id="modal-title">История запросов</span>
+                        <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
+                    </div>
+                    <div id="modal-body" class="modal-body">
+                        <div class="text-center" style="color:#888;padding:30px 0;">Загрузка...</div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <footer class="site-footer"></footer>
@@ -1101,19 +1235,21 @@ body {
 </div>
 
 <script>
+var HISTORY_DATA = {};
+
 function filterEndpoints(tag) {
-    var tagGroups = document.querySelectorAll('.report-demo .tag-group');
-    var noResultsMessage = document.querySelector('.report-demo #no-results-message');
-    var hasVisibleResults = false;
+    const tagGroups = document.querySelectorAll('.report-demo .tag-group');
+    const noResultsMessage = document.querySelector('.report-demo #no-results-message');
+    let hasVisibleResults = false;
 
     tagGroups.forEach(function (group) {
-        var groupEndpoints = group.querySelectorAll('.endpoint');
-        var groupHasVisibleEndpoints = false;
+        const groupEndpoints = group.querySelectorAll('.endpoint');
+        let groupHasVisibleEndpoints = false;
 
         groupEndpoints.forEach(function (endpoint) {
-            var isCovered = endpoint.getAttribute('data-covered') === 'true';
-            var endpointTag = endpoint.getAttribute('data-tag');
-            var visible = false;
+            const isCovered = endpoint.getAttribute('data-covered') === 'true';
+            const endpointTag = endpoint.getAttribute('data-tag');
+            let visible = false;
 
             if (tag === 'all') {
                 visible = true;
@@ -1139,6 +1275,95 @@ function filterEndpoints(tag) {
 
     noResultsMessage.style.display = hasVisibleResults ? 'none' : 'block';
 }
+
+function pluralize(n, words) {
+    n = Math.abs(n) % 100;
+    var n1 = n % 10;
+    if (n > 10 && n < 20) return words[2];
+    if (n1 > 1 && n1 < 5) return words[1];
+    if (n1 === 1) return words[0];
+    return words[2];
+}
+
+function statusClass(code) {
+    if (code < 300) return 'ok';
+    if (code < 400) return 'redirect';
+    return 'error';
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+function renderRecord(rec) {
+    var detailHtml = '';
+    if (rec.request_preview) {
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Request</span><span class="history-detail-value">' + escapeHtml(rec.request_preview) + '</span></div>';
+    }
+    if (rec.response_preview) {
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Response</span><span class="history-detail-value">' + escapeHtml(rec.response_preview) + '</span></div>';
+    }
+    if (rec.query_params) {
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Params</span><span class="history-detail-value">' + escapeHtml(rec.query_params) + '</span></div>';
+    }
+    if (rec.content_type) {
+        detailHtml += '<div class="history-detail-row"><span class="history-detail-label">Content-Type</span><span class="history-detail-value">' + escapeHtml(rec.content_type) + '</span></div>';
+    }
+
+    return '<div class="history-record">'
+        + '<div class="history-record-top">'
+        + '<span class="history-status ' + statusClass(rec.status_code) + '">' + rec.status_code + '</span>'
+        + '<div class="history-meta">'
+        + '<span class="history-timestamp">' + rec.timestamp + '</span>'
+        + '<span class="history-duration">' + rec.duration_ms + ' ms</span>'
+        + '</div>'
+        + '</div>'
+        + detailHtml
+        + '</div>';
+}
+
+function showEndpointHistory(method, path) {
+    var modal = document.getElementById('history-modal');
+    var title = document.getElementById('modal-title');
+    var body = document.getElementById('modal-body');
+
+    title.textContent = method + ' ' + path;
+    body.innerHTML = '<div class="text-center" style="color:#888;padding:30px 0;">Загрузка...</div>';
+    modal.style.display = 'flex';
+
+    setTimeout(function () {
+        var data = HISTORY_DATA[method + ' ' + path];
+        if (!data || data.length === 0) {
+            body.innerHTML = '<div class="history-empty">Запросов по этому эндпоинту не было</div>';
+            return;
+        }
+        var word = pluralize(data.length, ['запрос', 'запроса', 'запросов']);
+        var html = '<div class="history-count-line"><span class="history-count-badge">' + data.length + ' ' + word + '</span></div>';
+        data.forEach(function (rec) {
+            html += renderRecord(rec);
+        });
+        body.innerHTML = html;
+    }, 300);
+}
+
+function closeHistoryModal(e) {
+    if (e && e.target !== document.getElementById('history-modal')) return;
+    document.getElementById('history-modal').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('endpoints-container').addEventListener('click', function (e) {
+        var endpoint = e.target.closest('.endpoint');
+        if (endpoint) {
+            var method = endpoint.getAttribute('data-method');
+            var path = endpoint.getAttribute('data-path');
+            showEndpointHistory(method, path);
+        }
+    });
+});
 
 (function () {
     var sections = document.querySelectorAll('.section');

@@ -46,6 +46,7 @@ async def export_report(request: Request):
             "endpoints_by_tags": svc.spec.by_tag,
             "tags": list(svc.spec.by_tag),
             "covered_endpoints": svc.covered,
+            "history_data": svc.history_data,
         },
     )
 

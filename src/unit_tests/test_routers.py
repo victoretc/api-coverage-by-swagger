@@ -32,6 +32,7 @@ def _make_mock_service(**overrides):
     svc.spec = Mock()
     svc.spec.by_tag = {"api": []}
     svc.covered = set()
+    svc.history_data = {}
     svc.mark = Mock()
     svc.record_request = Mock()
     for k, v in overrides.items():
