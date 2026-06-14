@@ -32,7 +32,7 @@ pytest_plugins = get_fixtures()
 
 
 @pytest.fixture
-def test_credentials(book_club_service: BookClubService) -> dict:
+def test_credentials(book_club_service: BookClubService):
     uid = str(uuid4())
     book_club_service.users.post_api_v1_users_register_with_http_info(
         UserRegister(username=uid, password="TestPass123!"),
@@ -51,7 +51,7 @@ def test_credentials(book_club_service: BookClubService) -> dict:
 
 
 @pytest.fixture
-def _auth_setup(book_club_service_client: httpx.Client, test_credentials: dict) -> None:
+def with_auth(book_club_service_client: httpx.Client, test_credentials: dict) -> None:
     book_club_service_client.headers["Authorization"] = (
         f"Bearer {test_credentials['access']}"
     )

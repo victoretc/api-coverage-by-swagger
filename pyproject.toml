@@ -29,7 +29,28 @@ pytest-asyncio = "^1.4.0"
 ruff = "^0.15.17"
 
 [tool.ruff]
-exclude = ["e2e-book-club/internal/"]
+exclude = [
+    "e2e-book-club/internal/",
+    "e2e-book-club/framework/fixtures/http/book_club_service.py",
+]
+
+[tool.mypy]
+namespace_packages = true
+exclude = [
+    "e2e-book-club/internal/",
+]
+
+[[tool.mypy.overrides]]
+module = ["curlify2", "e2efast.*", "prance.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "e2e-book-club.internal.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "framework.fixtures.http.book_club_service"
+ignore_errors = true
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "e2e-book-club"]

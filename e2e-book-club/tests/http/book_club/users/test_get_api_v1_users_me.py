@@ -12,7 +12,7 @@ from framework.fixtures.http.book_club_service import BookClubService
 
 
 def test_get_api_v1_users_me(
-    book_club_service: BookClubService, _auth_setup: None
+    book_club_service: BookClubService, with_auth: None
 ) -> None:
     user = book_club_service.users.get_api_v1_users_me()
     assert user.id > 0
