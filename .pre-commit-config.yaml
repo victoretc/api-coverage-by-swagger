@@ -51,7 +51,7 @@ repos:
     hooks:
       - id: pytest
         name: pytest
-        entry: poetry run pytest src/unit_tests --exitfirst
+        entry: poetry run pytest src/unit_tests --exitfirst -v
         language: system
         types: [python]
         pass_filenames: false
