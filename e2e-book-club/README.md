@@ -1,0 +1,104 @@
+# BookClub Service API tests project
+
+> Generated automatically by **e2efast**.
+
+## Overview
+
+This project was scaffolded from the OpenAPI specification for the `book_club` service. The codebase is organised to keep generated artefacts separate from the places where you add custom logic, making it safe to rerun the generator whenever the contract changes.
+
+## Quick Start
+
+1. Run the generator (adjusting service name/spec as needed). The `--spec`
+   option accepts either a local file path or an HTTP(S) URL:
+
+   ```bash
+   poetry run e2efast book_club --spec ./openapi.json --with-tests
+   ```
+
+2. Open `framework/settings/base_settings.py` and provide host values for the
+   generated fields. The generator will append new services to this file
+   automatically—you only need to fill in the URLs.
+
+3. Environment variables are optional: leave them unset if you rely on
+   `Settings()` defaults, or export overrides before running tests:
+
+   ```bash
+   export BOOK_CLUB_BASE_URL="https://api.example.test"
+   ```
+
+   Generated clients, fixtures, and tests will read values from `Settings()` on
+   every run.
+
+4. Need only clients and fixtures (without tests)? Run the same command with
+   `--with-fixtures` (the `--spec` option still accepts a path or URL):
+
+   ```bash
+   poetry run e2efast book_club --spec ./openapi.json --with-fixtures
+   ```
+
+## Project Structure
+
+```
+├── framework                          # User-facing extension layer
+│    ├── clients
+│    │    └── http
+│    │        └── book_club          # Service namespace for editable wrappers
+│    ├── fixtures
+│    │     └── http
+│    │         ├── base.py             # Define ClientClass alias (editable)
+│    │         └── book_club.py      # Fixtures for wrapper clients (overwritten on regen)
+│    └── settings
+│         └── base_settings.py         # Pydantic settings scaffold (generated once)
+│
+├── internal                           # Auto-regenerated low-level clients
+│    └── clients
+│        └── http                      # REST clients & models (overwritten on regen)
+│            └── book_club
+│                ├── apis              # Generated API client classes
+│                └── models            # Pydantic models
+│
+└── tests                              # Generated or custom test suites
+     ├── conftest.py                   # pytest plugin registration (generated once)
+     └── http
+          └── book_club            # Generated test suite (if enabled)
+```
+* **internal** – contains the raw clients and data models produced by `restcodegen`. These files are overwritten on each generation. If you need a technical helper (e.g. custom HTTP adapter or DB-aware client), place it in another module to avoid losing changes.
+* **framework/clients/http/book_club** – hosts subclasses of the generated clients. Override methods here to simplify calls or add project-specific behaviour. Files in this folder are **not** overwritten after the first generation.
+* **framework/fixtures/http/book_club.py** – pytest fixtures that instantiate the wrapper clients. They provide a single entry point for the HTTP client configuration used inside tests.
+
+## Using the Fixtures
+
+1. Fixtures are auto-registered via `tests/conftest.py` by calling
+   `get_fixtures()`. If you add custom fixture modules, extend the returned list
+   or append to `pytest_plugins` in that file.
+
+2. Provide base URLs in either `framework/settings/base_settings.py` or via
+   environment variables. The settings generator keeps the file in sync with new
+   services, so you typically only update the values:
+
+   ```bash
+   export BOOK_CLUB_BASE_URL="https://api.example.test"
+   ```
+
+3. If you need to change the HTTP client implementation globally, edit
+   `framework/fixtures/http/base.py` and update `ClientClass`. Every generated
+   fixture imports that alias and will pick up the override automatically.
+
+4. `framework/settings/base_settings.py` is editable and now auto-augmented on
+   subsequent generations. New services get appended as `str | None` fields, so
+   you only need to supply the URL. Environment variable names follow the pattern
+   `<package_name_upper>_BASE_URL` and are mirrored in the settings aliases.
+
+## Regeneration Guidelines
+
+- Re-run `e2efast` each time the OpenAPI specification changes. The generator will refresh `internal/` and fixture code while leaving your custom wrappers untouched.
+- Keep custom business logic inside the `clients/http/book_club` package or other user-created modules.
+- If you introduce additional fixtures, remember to register their module path in `pytest_plugins` as well.
+
+## Additional Resources
+
+- Source generator: [e2efast](https://pypi.org/project/e2efast/)
+
+---
+
+Generated on runtime by `e2efast` from the `book_club` specification.

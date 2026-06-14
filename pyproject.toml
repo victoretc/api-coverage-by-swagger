@@ -13,6 +13,10 @@ uvicorn = "^0.34.0"
 jinja2 = "^3.1.5"
 httpx = "^0.28.1"
 prance = {extras = ["osv"], version = "^25.4.8.0"}
+e2efast = "^1.0.1"
+email-validator = ">=2.0.0"
+structlog = "^25.1.0"
+curlify2 = "^2.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -24,8 +28,11 @@ faker = "^37.4.0"
 pytest-asyncio = "^1.4.0"
 ruff = "^0.15.17"
 
+[tool.ruff]
+exclude = ["e2e-book-club/internal/"]
+
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["src", "e2e-book-club"]
 
 [build-system]
 requires = ["poetry-core"]
