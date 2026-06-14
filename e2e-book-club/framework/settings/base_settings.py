@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     """Environment-driven configuration for HTTP clients."""
 
     book_club: str | None = Field(
-        default="https://book-club.qa.guru",
+        default="http://127.0.0.1:8000/proxy",
         alias="BOOK_CLUB_BASE_URL",
         description="Base URL for the service",
     )
